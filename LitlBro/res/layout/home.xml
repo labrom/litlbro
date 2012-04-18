@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:orientation="vertical">
+    
+    <RelativeLayout style="@style/homeHeader"
+        android:layout_width="fill_parent" android:layout_height="wrap_content">
+    
+	    <labrom.litlbro.widget.SiteSearchText android:id="@+id/siteTextBox" style="@style/siteTextBox"
+	        android:layout_width="fill_parent" android:layout_height="wrap_content"
+	        android:hint="@string/siteTextBoxHint" />
+	    <View android:id="@+id/icon"
+	        android:layout_width="48dp" android:layout_height="48dp"
+	        android:layout_alignRight="@id/siteTextBox" android:layout_alignBottom="@id/siteTextBox" />
+	    
+	</RelativeLayout>
+    
+    <ListView android:id="@+id/suggestions" android:visibility="gone" style="@style/suggestions"
+        android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    
+    <include layout="@layout/shortcuts_navigator_view" android:id="@+id/shortcutsPager" />
+
+</LinearLayout>

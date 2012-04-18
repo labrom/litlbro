@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <CheckBoxPreference
+        android:key="useAnimations"
+        android:title="@string/prefUseAnimationsTitle"
+        android:summaryOn="@string/prefUseAnimationsOnSummary"
+        android:summaryOff="@string/prefUseAnimationsOffSummary"
+        android:defaultValue="@bool/prefUseAnimationsDefault" />
+    
+    <ListPreference
+        android:key="nbPages"
+        android:title="@string/prefNbPagesTitle"
+        android:summary="@string/prefNbPagesTitle"
+        android:entries="@array/prefNbPagesValues"
+        android:entryValues="@array/prefNbPagesValues"
+        android:dialogTitle="@string/prefNbPagesDialogTitle" />
+    
+    <PreferenceCategory android:title="@string/prefCategoryShake">
+	    <CheckBoxPreference
+	        android:key="shakeNeedsConfirm"
+	        android:title="@string/prefConfirmShakeTitle" 
+	        android:summaryOn="@string/prefConfirmShakeOnSummary" 
+	        android:summaryOff="@string/prefConfirmShakeOffSummary"
+	        android:defaultValue="true" />
+		<com.hlidskialf.android.preference.SeekBarPreference
+            android:key="shakeLevel"
+            android:title="@string/prefShakeLevelTitle"
+            android:summary="@string/prefShakeLevelSummary"
+		    android:defaultValue="@integer/prefShakeLevelDefault"
+		    android:dialogMessage="@string/prefShakeLevelDialogTitle"
+		    android:max="@integer/prefShakeLevelMax"
+		    android:text="" />
+    </PreferenceCategory>
+
+    <PreferenceScreen android:title="@string/prefHistoryBlacklistTitle">
+        <intent android:action="labrom.litlbro.prefs.blacklist" />
+    </PreferenceScreen>
+
+</PreferenceScreen>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:state_enabled="false">
+        <shape>
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+    <item >
+        <inset
+            android:insetLeft="@dimen/shortcutInset" android:insetRight="@dimen/shortcutInset" android:insetBottom="@dimen/shortcutInset">
+	        <shape>
+	            <!-- http://code.google.com/p/android/issues/detail?id=9161 but we don't care since bottom radius is the same on the left and right -->
+	            <corners
+	                android:radius="@dimen/shortcutRoundCornerInner"
+	                android:topLeftRadius="0dp"
+	                android:topRightRadius="0dp"
+	                android:bottomLeftRadius="@dimen/shortcutRoundCornerInner"
+	                android:bottomRightRadius="@dimen/shortcutRoundCornerInner" />
+	            <solid android:color="@color/shortcut_caption_strip" />
+	        </shape>
+	    </inset>
+    </item>
+</selector>

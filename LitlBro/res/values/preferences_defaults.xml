@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="prefUseAnimationsDefault">false</bool>
+    <integer name="prefShakeLevelDefault">5</integer>
+    <integer name="prefShakeLevelMax">10</integer>
+    
+    <integer name="prefNbPagesDefault">3</integer>
+    <string-array name="prefNbPagesValues">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+</resources>

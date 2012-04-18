@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="labrom.litlbro"
+      android:versionCode="3"
+      android:versionName="beta3">
+    <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="9"/> <!-- targetSdkVersion = 9 seems to prevent the zoom compatibility window mode to show up while allowing the menu button to be here... -->
+    <supports-screens android:anyDensity="true" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission." />
+    
+    <application android:icon="@drawable/icon" android:label="@string/app_name" android:theme="@android:style/Theme.NoTitleBar">
+    
+        <activity android:name=".ActivityHome" android:label="@string/app_name" android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ActivityBrowser">
+			<intent-filter>
+			    <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:scheme="about" />
+                <data android:scheme="javascript" />
+            </intent-filter>
+			
+        </activity>
+        <activity android:name=".ActivityPrefs">
+        </activity>
+        <activity android:name=".ActivityPrefsBlacklist">
+            <intent-filter>
+                <action android:name="labrom.litlbro.prefs.blacklist"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+    </application>
+</manifest>

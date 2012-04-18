@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LitlBro</string>
+    <string name="iconContentDesc">LitlBro icon</string>
+    <string name="shareDialogTitle">Share a link</string><string name="shareScreenshotDialogTitle">Share a picture of this page</string>
+    <string name="progressShareScreenshot">Taking a picture of the web page&#8230;</string>
+    <string name="siteTextBoxHint">Type here to start</string>
+    
+    <string name="optionStarPage">STAR THIS PAGE</string>
+    <string name="optionShareLink">SHARE LINK</string>
+    <string name="optionShareScreenshot">SHARE SCREENSHOT</string>
+    <string name="optionUnstarPage">UNSTAR THIS PAGE</string>
+    <string name="optionPreferences">SETTINGS</string>
+    
+    <string name="prefUseAnimationsTitle">Screen animations</string>
+    <string name="prefUseAnimationsOnSummary">All animations are enabled</string>
+    <string name="prefUseAnimationsOffSummary">Some animations are disabled</string>
+    <string name="prefNbPagesTitle">Shortcut pages</string>
+    <string name="prefNbPagesSummary">Number of shortcut pages</string>
+    <string name="prefNbPagesDialogTitle">Number of pages</string>
+    <string name="prefCategoryShake">Shake to go home</string>
+    <string name="prefConfirmShakeTitle">Confirm on shake?</string>
+    <string name="prefConfirmShakeOnSummary">Confirmation needed</string>
+    <string name="prefConfirmShakeOffSummary">Confirmation not needed</string>
+    <string name="prefShakeLevelTitle">Shake sensibility</string>
+    <string name="prefShakeLevelSummary">Set the shake sensor level</string>
+    <string name="prefShakeLevelDialogTitle">Sensor level</string>
+    <string name="prefHistoryBlacklistTitle">Manage history blacklist</string>
+    <string name="prefHistoryBlacklistReinstate">Add back</string>
+    <string name="prefHistoryBlacklistEmpty">History blacklist is currently empty.\r\n\r\nYou can add shortcuts to the blacklist by long-pressing any shortcut then tapping the close button of the shortcut you want to remove.</string>
+</resources>

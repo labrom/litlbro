@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item >
+        <inset
+            android:insetLeft="@dimen/shortcutInset" android:insetTop="@dimen/shortcutInset">
+	        <shape>
+	            <!-- http://code.google.com/p/android/issues/detail?id=9161 there is another drawable in drawable-v12 -->
+	            <corners
+	                android:radius="@dimen/shortcutRoundCornerInner"
+	                android:topLeftRadius="@dimen/shortcutRoundCornerInner"
+	                android:topRightRadius="0dp"
+	                android:bottomLeftRadius="@dimen/shortcutRoundCornerSmall"
+	                android:bottomRightRadius="0dp" />
+	            <solid android:color="@android:color/white" />
+	        </shape>
+	    </inset>
+    </item>
+</selector>

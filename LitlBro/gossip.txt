@@ -1,0 +1,60 @@
+US
+http://sugg.us.search.yahoo.net/gossip-us-ura?droprotated=1&output=sd1&command=tes&nresults=10&callback=YUI.Env.DataSource.callbacks.yui_3_3_0_2_1331418762357335
+
+FR
+http://sugg.fr.search.yahoo.net/gossip-fr-ura?droprotated=1&output=sd1&command=te&nresults=10&callback=YUI.Env.DataSource.callbacks.yui_3_3_0_2_1331418857559248
+
+DE, AT
+http://sugg.de.search.yahoo.net/gossip-de-ura?droprotated=1&output=sd1&command=rs&nresults=10&callback=YUI.Env.DataSource.callbacks.yui_3_3_0_2_1331418916574272
+
+CA
+http://sugg.ca.search.yahoo.net/gossip-ca-ura?droprotated=1&output=sd1&command=mo&nresults=10&callback=YUI.Env.DataSource.callbacks.yui_3_3_0_2_1331418967467228
+
+QC
+http://sugg.ca.search.yahoo.net/gossip-qc-sayt/?output=yjsonp&nresults=10&command=ta&rnd=51839672747722033
+
+IT
+http://sugg.it.search.yahoo.net/gossip-it-ura?droprotated=1&output=sd1&command=it&nresults=10&callback=YUI.Env.DataSource.callbacks.yui_3_3_0_2_1331419000445228
+
+ES
+http://sugg.es.search.yahoo.net/gossip-es-ura?droprotated=1&output=sd1&command=ro&nresults=10&callback=YUI.Env.DataSource.callbacks.yui_3_3_0_2_1331419031204228
+
+UK, IRL
+http://sugg.uk.search.yahoo.net/gossip-uk-ura?droprotated=1&output=sd1&command=qa&nresults=10&callback=YUI.Env.DataSource.callbacks.yui_3_3_0_2_1331419054755277
+
+BR
+http://sugg.br.search.yahoo.net/gossip-br-ura?droprotated=1&output=sd1&command=br&nresults=10&callback=YUI.Env.DataSource.callbacks.yui_3_3_0_2_1331419379820228
+
+TW
+http://sugg.tw.search.yahoo.net/gossip-tw-ura?droprotated=1&bm=1&output=sd1&command=%E7%A7%9F%E8%BB%8A&nresults=10&callback=YUI.Env.DataSource.callbacks.yui_3_3_0_2_1331419406761324
+
+HK
+http://sugg.hk.search.yahoo.net/gossip-hk-ura?droprotated=1&bm=1&output=sd1&command=&nresults=9&callback=YUI.Env.DataSource.callbacks.yui_3_3_0_2_1331419439042249
+
+AU
+http://sugg.au.search.yahoo.net/gossip-au-ura?droprotated=1&output=sd1&command=de&nresults=10&callback=YUI.Env.DataSource.callbacks.yui_3_3_0_2_1331419520339228
+
+NZ
+http://sugg.nz.search.yahoo.net/gossip-nz-ura?droprotated=1&output=sd1&command=tel&nresults=10&callback=YUI.Env.DataSource.callbacks.yui_3_3_0_2_1331423446252335
+
+MX
+http://sugg.mx.search.yahoo.net/gossip-mx-sayt/?output=yjsonp&nresults=10&command=me&rnd=8043705353325818933951584182
+
+PE (Peru)
+http://sugg.e1.search.yahoo.net/gossip-e1-sayt/?output=yjsonp&nresults=10&command=tor&rnd=8701410542922365475
+
+ID (Indonesia)
+http://sugg.id.search.yahoo.net/gossip-id-ura?droprotated=1&output=sd1&command=ro&nresults=10&callback=YUI.Env.DataSource.callbacks.yui_3_3_0_2_1331419722709228
+
+IN (India)
+http://sugg.in.search.yahoo.net/gossip-in-ura?droprotated=1&output=sd1&command=ro&nresults=10&callback=YUI.Env.DataSource.callbacks.yui_3_3_0_2_1331419757803228
+
+VN
+http://sugg.vn.search.yahoo.net/gossip-vn-sayt/?output=yjsonp&nresults=10&command=ro&rnd=4619592953121471
+
+KR
+http://sugg.kr.search.yahoo.net/gossip-kr-ura?droprotated=1&output=sd1&command=K%ED%8F%AC%EC%8A%A4%ED%8A%B8&nresults=10&callback=YUI.Env.DataSource.callbacks.yui_3_3_0_2_1331419811255236
+
+SG
+http://sugg.sg.search.yahoo.net/gossip-sg-sayt/?output=yjsonp&nresults=10&command=rob&rnd=2000522913825377339541260342
+

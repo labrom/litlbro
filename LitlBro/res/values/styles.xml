@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <style name="controlBar">
+    </style>
+    
+    <style name="controlBarTitle">
+        <item name="android:background">#d0202020</item>
+        <item name="android:maxLines">4</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#fff0fff0</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingTop">28dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
+    <style name="controlBarPad">
+        <item name="android:padding">0dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+    </style>
+
+    <style name="controlBarJsToggle">
+    </style>
+
+
+    <style name="optionsPane">
+        <item name="android:background">@color/options_pane_bg</item>
+        <item name="android:padding">6dp</item>
+    </style>
+    <style name="optionsPaneItem">
+        <item name="android:textColor">@color/text_clear</item>
+        <item name="android:textSize">19sp</item>
+        <item name="android:shadowColor">@color/text_clear_shadow</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">0.5</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:paddingLeft">7dp</item>
+        <item name="android:paddingRight">7dp</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingBottom">20dp</item>
+        <item name="android:layout_margin">6dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="optionsPaneItemBig" parent="@style/optionsPaneItem">
+        <item name="android:textSize">22sp</item>
+        <item name="android:padding">8dp</item>
+    </style>
+    
+    <style name="homeHeader">
+        <item name="android:background">@drawable/home_header_bg</item>
+        <item name="android:paddingLeft">9dp</item>
+        <item name="android:paddingRight">9dp</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingBottom">14dp</item>
+     </style>
+     
+    <style name="siteTextBox">
+        <item name="android:background">@drawable/home_header_box</item>
+        <item name="android:lines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:gravity">center_vertical</item>
+        
+    </style>
+    
+    <style name="suggestions">
+        <item name="android:background">@color/suggestion_item</item>
+        <item name="android:cacheColorHint">@color/suggestion_item</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:divider">@drawable/suggestion_separator</item>
+        <item name="android:dividerHeight">2px</item>
+     </style>
+    <style name="suggestion">
+        <item name="android:padding">6dp</item>
+        <item name="android:background">@drawable/suggestion_bg</item>
+    </style>
+    <style name="suggestionCaption">
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:lines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+    <style name="suggestionUrl">
+        <item name="android:textColor">#909090</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:lines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:paddingTop">3dp</item>
+    </style>
+    <style name="suggestionIcon">
+        <item name="android:padding">8dp</item>
+        </style>
+    
+    <style name="shortcutsNavigatorView">
+    </style>
+    <style name="shortcutsPageIndicator">
+        <item name="android:background">@drawable/pager_indicator</item>
+        <item name="android:layout_height">10px</item>
+    </style>
+    <integer name="shortcutPageIndicatorMaskMin">120</integer>
+    <style name="shortcuts">
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+    </style>
+    <style name="shortcut">
+        <item name="android:enabled">false</item>
+        <item name="android:background">@drawable/shortcut_bg</item>
+        <item name="android:layout_margin">6dp</item>
+    </style>
+    <style name="shortcutContent">
+        <item name="android:background">@drawable/shortcut_border</item>
+    </style>
+    <style name="shortcutCaption">
+        <item name="android:background">@drawable/shortcut_caption_strip</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/text_clear</item>
+        <item name="android:shadowColor">@color/text_clear_shadow</item>
+        <item name="android:shadowDx">0.5</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:gravity">left</item>
+        <item name="android:padding">11dp</item>
+    </style>
+    <style name="shortcutFavicon">
+        <item name="android:background">@drawable/shortcut_favicon_bg</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:scaleType">center</item>
+        </style>
+    <style name="shortcutRemoveButton">
+        <item name="android:layout_margin">11dp</item>
+        <item name="android:background">@drawable/shortcut_delete</item>
+    </style>
+    <dimen name="shortcutRoundCorner">16dp</dimen>
+    <dimen name="shortcutRoundCornerSmall">8dp</dimen>
+    <dimen name="shortcutRoundCornerInner">16dp</dimen>
+    <dimen name="shortcutInset">1px</dimen>
+    <dimen name="shortcutStroke">1px</dimen>
+    
+
+</resources>

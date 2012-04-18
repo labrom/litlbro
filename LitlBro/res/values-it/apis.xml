@@ -1,0 +1,5 @@
+<resources>
+
+    <string name="gossipApi">http://sugg.it.search.yahoo.net/gossip-it-ura</string>
+
+</resources>

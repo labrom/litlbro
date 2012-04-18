@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <color name="home_header_light">#d9e0e9</color>
+    <color name="home_header_dark">#737e8f</color>
+    <color name="home_bg">@color/home_header_dark</color>
+    
+    <color name="pager_nav_bar">@android:color/white</color>
+    <color name="pager_nav_mask">@color/home_header_dark</color>
+    
+    <color name="suggestion_item_press">@color/suggestion_item_darker</color>
+    <color name="suggestion_item">#e6e3e1</color>
+    <color name="suggestion_item_lighter">#f7f3f1</color>
+    <color name="suggestion_item_darker">#d2cfce</color>
+    
+    <color name="shortcut_gradient_clear">#ea808d9e</color>
+    <color name="shortcut_gradient_dark">#ea202d39</color>
+    <color name="shortcut_gradient_clear_press">#ea606d7e</color>
+    <color name="shortcut_gradient_dark_press">#aa000d19</color>
+    <color name="shortcut_gradient_stroke">#ea202030</color>
+    <color name="shortcut_border_disabled">#d6d6d6</color>
+    <color name="shortcut_bg_disabled">#e4e4e4</color>
+    <color name="shortcut_caption_strip">#80000000</color>
+    
+    <color name="options_pane_bg">#ea202d41</color>
+    
+    <color name="text_clear">#fcfcfc</color>
+    <color name="text_clear_shadow">#90303030</color>
+    <color name="text_clear_shadow_lighter">#60303030</color>
+
+    
+</resources>

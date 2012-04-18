@@ -1,0 +1,5 @@
+<resources>
+
+    <string name="gossipApi">http://sugg.sg.search.yahoo.net/gossip-sg-sayt/</string>
+
+</resources>

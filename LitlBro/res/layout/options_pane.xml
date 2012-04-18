@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:visibility="visible" style="@style/optionsPane"
+    android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="horizontal">
+
+    <ToggleButton android:id="@+id/star" android:textOff="@string/optionStarPage" android:textOn="@string/optionUnstarPage" style="@style/optionsPaneItemBig"
+        android:background="@drawable/option_star"
+        android:layout_width="0dp" android:layout_weight="1" android:layout_height="fill_parent" />
+
+
+    <RelativeLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="fill_parent" android:orientation="vertical">
+	    <Button android:id="@+id/share" android:text="@string/optionShareLink" style="@style/optionsPaneItem"
+	        android:background="@drawable/option_share"
+	        android:layout_width="fill_parent" android:layout_height="wrap_content" />
+	       
+	    <Button android:id="@+id/shareScreenshot" android:text="@string/optionShareScreenshot" style="@style/optionsPaneItem"
+	        android:background="@drawable/option_share"
+	        android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/share" />
+
+        <ToggleButton android:id="@+id/optionsJsToggle" android:textOn="TURN JAVASCRIPT OFF" android:textOff="TURN JAVASCRIPT ON" style="@style/optionsPaneItem"
+            android:background="@drawable/option_js_toggle"
+            android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/shareScreenshot" />
+        
+        <Button android:id="@+id/prefs" android:text="@string/optionPreferences" style="@style/optionsPaneItem"
+            android:background="@drawable/option_preferences"
+            android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+       
+</LinearLayout>
