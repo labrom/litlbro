@@ -58,7 +58,7 @@ public class BrowserSettings {
         new Signature("setDatabaseEnabled", Boolean.TRUE),
         new Signature("setAllowFileAccess", Boolean.TRUE),
         new Signature("setLoadWithOverviewMode", Boolean.TRUE),
-        new Signature("setDisplayZoomControls", Boolean.FALSE),
+//        new Signature("setDisplayZoomControls", Boolean.FALSE),
         new Signature("setPluginState", new PluginStateOnArg())
         };
     
