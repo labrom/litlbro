@@ -16,6 +16,10 @@
         android:entryValues="@array/prefNbPagesValues"
         android:dialogTitle="@string/prefNbPagesDialogTitle" />
     
+    <PreferenceScreen android:title="@string/prefHistoryBlacklistTitle">
+        <intent android:action="labrom.litlbro.prefs.blacklist" />
+    </PreferenceScreen>
+
     <PreferenceCategory android:title="@string/prefCategoryShake">
 	    <CheckBoxPreference
 	        android:key="shakeNeedsConfirm"
@@ -32,9 +36,5 @@
 		    android:max="@integer/prefShakeLevelMax"
 		    android:text="" />
     </PreferenceCategory>
-
-    <PreferenceScreen android:title="@string/prefHistoryBlacklistTitle">
-        <intent android:action="labrom.litlbro.prefs.blacklist" />
-    </PreferenceScreen>
 
 </PreferenceScreen>
