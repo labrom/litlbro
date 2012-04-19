@@ -133,11 +133,17 @@
         <item name="android:padding">6dp</item>
         <item name="android:layout_width">32dp</item>
         <item name="android:layout_height">32dp</item>
-        <item name="android:scaleType">center</item>
+        <item name="android:scaleType">centerInside</item>
         </style>
     <style name="shortcutRemoveButton">
-        <item name="android:layout_margin">11dp</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:layout_width">25dp</item>
+        <item name="android:layout_height">25dp</item>
         <item name="android:background">@drawable/shortcut_delete</item>
+    </style>
+    <style name="shortcutStar">
+        <item name="android:padding">@dimen/shortcutInset</item>
+        <item name="android:src">@drawable/shortcut_star</item>
     </style>
     <dimen name="shortcutRoundCorner">16dp</dimen>
     <dimen name="shortcutRoundCornerSmall">8dp</dimen>

@@ -96,7 +96,7 @@ public class ShortcutsPage extends FrameLayout implements OnLongClickListener {
         return shortcuts.size();
     }
 
-    public void activateShortcut(int index, CharSequence text, Bitmap icon, Object tag, OnClickListener listener, ShortcutView.OnRemoveShortcutListener removeListener) {
+    public void activateShortcut(int index, CharSequence text, boolean starred, Bitmap icon, Object tag, OnClickListener listener, ShortcutView.OnRemoveShortcutListener removeListener) {
         if(shortcuts == null || index >= shortcuts.size())
             return;
         ShortcutView sh = shortcuts.get(index);
@@ -104,6 +104,7 @@ public class ShortcutsPage extends FrameLayout implements OnLongClickListener {
         sh.setText(text);
         sh.setSmallIcon(icon);
         sh.setEnabled(true);
+        sh.setStarred(starred);
         sh.update();
         sh.setOnClickListener(listener);
         sh.setOnRemoveShortcutListener(removeListener);

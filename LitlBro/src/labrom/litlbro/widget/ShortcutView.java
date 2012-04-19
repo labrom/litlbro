@@ -28,6 +28,7 @@ public class ShortcutView extends FrameLayout implements OnClickListener {
     private OnRemoveShortcutListener onRemoveShortcutListener;
     private Bitmap bigIconBmp;
     private Bitmap faviconBmp;
+    private View star;
     private boolean editMode;
 
     public ShortcutView(Context context) {
@@ -50,6 +51,7 @@ public class ShortcutView extends FrameLayout implements OnClickListener {
         bigIcon = (IconView)findViewById(R.id.big_icon);
         remove = (Button)findViewById(R.id.remove);
         remove.setOnClickListener(this);
+        star = findViewById(R.id.starred);
     }
     
     public OnRemoveShortcutListener getOnRemoveShortcutListener() {
@@ -68,11 +70,10 @@ public class ShortcutView extends FrameLayout implements OnClickListener {
         faviconBmp = icon;
     }
     
-    @Override
-    public void setEnabled(boolean enabled) {
-        super.setEnabled(enabled);
+    public void setStarred(boolean starred) {
+        star.setVisibility(starred ? View.VISIBLE : View.INVISIBLE);
     }
-
+    
     public void update() {
         boolean enabled = isEnabled();
         caption.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);

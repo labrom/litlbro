@@ -117,7 +117,7 @@ public class ShortcutsNavigatorView extends RelativeLayout implements OnEditMode
                 break;
             h.detach();
             ShortcutsPage page = shortcutsPages[index / nbPerPage];
-            page.activateShortcut(index % nbPerPage, UrlUtil.simplifyHost(h.host), iconCache.readBitmap(h.host), h, onClickListener, onRemoveListener);
+            page.activateShortcut(index % nbPerPage, UrlUtil.simplifyHost(h.host), h.isStarred, iconCache.readBitmap(h.host), h, onClickListener, onRemoveListener);
             index ++;
         }
     }

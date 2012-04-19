@@ -2,20 +2,17 @@
     style="@style/shortcut"
     android:layout_width="fill_parent" android:layout_height="0dp" android:layout_weight="1">
     
-    <RelativeLayout
-        android:layout_width="fill_parent" android:layout_height="fill_parent">
-	    <labrom.litlbro.widget.IconView android:id="@+id/big_icon"
-	        android:layout_width="fill_parent" android:layout_height="fill_parent" />
-	</RelativeLayout>
+    <labrom.litlbro.widget.IconView android:id="@+id/big_icon"
+        android:layout_width="fill_parent" android:layout_height="fill_parent" />
     
     
     <RelativeLayout
         style="@style/shortcutContent"
         android:layout_width="fill_parent" android:layout_height="fill_parent">
-	    
-	    <Button android:id="@+id/remove" style="@style/shortcutRemoveButton" android:visibility="invisible"
-	        android:layout_width="25dp" android:layout_height="25dp"
-	        android:layout_alignParentTop="true" android:layout_alignParentRight="true" />
+        
+        <ImageView android:id="@+id/starred" style="@style/shortcutStar" android:visibility="invisible"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" android:layout_alignParentTop="true" />
 	    
 	    <TextView android:id="@+id/caption" style="@style/shortcutCaption" android:visibility="invisible"
 	        android:layout_width="fill_parent" android:layout_height="wrap_content"
@@ -24,5 +21,8 @@
 	    <ImageView android:id="@+id/favicon" style="@style/shortcutFavicon" android:visibility="invisible"
 	        android:layout_alignParentLeft="true" android:layout_alignParentTop="true" />
     
+        <Button android:id="@+id/remove" style="@style/shortcutRemoveButton" android:visibility="invisible"
+            android:layout_toRightOf="@id/favicon" android:layout_alignParentTop="true" />
+        
 	</RelativeLayout>
 </labrom.litlbro.widget.ShortcutView>
