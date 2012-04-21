@@ -202,6 +202,38 @@ public class DBHistoryManager implements HistoryManager {
             }
         });
     }
+    @Override
+    public void starHost(final String host) {
+        if(host == null)
+            return;
+        
+        executor.execute(new Runnable() {
+            public void run() {
+                List<History> history = db.query(new History(), null, "is_starred=0 AND host=?", new String[] {host}, null, "created DESC", null).asList();
+                for(History h : history) {
+                    starredUrls.add(h.url);
+                    h.star();
+                    h.update();
+                }
+            }
+        });
+    }
+    @Override
+    public void unstarHost(final String host) {
+        if(host == null)
+            return;
+        
+        executor.execute(new Runnable() {
+            public void run() {
+                List<History> history = db.query(new History(), null, "is_starred=1 AND host=?", new String[] {host}, null, "created DESC", null).asList();
+                for(History h : history) {
+                    starredUrls.remove(h.url);
+                    h.unstar();
+                    h.update();
+                }
+            }
+        });
+    }
     
     @Override
     public boolean isStarred(String url) {

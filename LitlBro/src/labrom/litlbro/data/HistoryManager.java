@@ -47,10 +47,27 @@ public interface HistoryManager {
      */
     void unstarUrl(String url);
     
+    /**
+     * Updating cache is synchronous. The rest is asynchronous.
+     * @param url
+     */
     boolean isStarred(String url);
     
+    /**
+     * Asynchronous.
+     * @param host
+     */
+    void unstarHost(final String host);
+
+    /**
+     * Asynchronous.
+     * @param host
+     */
+    void starHost(final String host);
+
     List<History> getMostPopularSites(int nb);
 
     List<Suggestion> getSuggestions(String query);
+
 
 }
