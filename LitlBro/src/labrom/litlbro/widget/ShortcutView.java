@@ -20,12 +20,18 @@ public class ShortcutView extends FrameLayout implements OnClickListener {
     public interface OnRemoveShortcutListener {
         void onRemoveShortcut(ViewGroup shortcutView, View removeButton);
     }
+    public interface OnStarShortcutListener {
+        void onStarShortcut(String host, boolean star);
+    }
     
     private TextView caption;
     private ImageView favicon;
     private IconView bigIcon;
     private Button remove;
+    private Button starToggle;
+    private View editBar;
     private OnRemoveShortcutListener onRemoveShortcutListener;
+    private OnStarShortcutListener onStarShortcutListener;
     private Bitmap bigIconBmp;
     private Bitmap faviconBmp;
     private View star;
@@ -49,11 +55,22 @@ public class ShortcutView extends FrameLayout implements OnClickListener {
         caption = (TextView)findViewById(R.id.caption);
         favicon = (ImageView)findViewById(R.id.favicon);
         bigIcon = (IconView)findViewById(R.id.big_icon);
+        editBar = findViewById(R.id.editBar);
         remove = (Button)findViewById(R.id.remove);
         remove.setOnClickListener(this);
+        starToggle = (Button)findViewById(R.id.starToggle);
+        starToggle.setOnClickListener(this);
         star = findViewById(R.id.starred);
     }
     
+    public OnStarShortcutListener getOnStarShortcutListener() {
+        return onStarShortcutListener;
+    }
+
+    public void setOnStarShortcutListener(OnStarShortcutListener onStarShortcutListener) {
+        this.onStarShortcutListener = onStarShortcutListener;
+    }
+
     public OnRemoveShortcutListener getOnRemoveShortcutListener() {
         return onRemoveShortcutListener;
     }
@@ -74,10 +91,17 @@ public class ShortcutView extends FrameLayout implements OnClickListener {
         star.setVisibility(starred ? View.VISIBLE : View.INVISIBLE);
     }
     
+    private void onToggleStar(View toggleButton) {
+        boolean currentlyStarred = star.getVisibility() == View.VISIBLE;
+        setStarred(!currentlyStarred);
+        if(onStarShortcutListener != null)
+            onStarShortcutListener.onStarShortcut(caption.getText().toString(), !currentlyStarred);
+    }
+
     public void update() {
         boolean enabled = isEnabled();
         caption.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
-        remove.setVisibility(editMode && enabled ? View.VISIBLE : View.INVISIBLE);
+        setEditMode(editMode);
         if(enabled) {
             String text = caption.getText().toString();
             if(text.length() > 0) {
@@ -109,10 +133,10 @@ public class ShortcutView extends FrameLayout implements OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if(v != remove)
-            return;
-        if(onRemoveShortcutListener != null)
+        if(v == remove && onRemoveShortcutListener != null)
             onRemoveShortcutListener.onRemoveShortcut(this, remove);
+        else if(v == starToggle && onStarShortcutListener != null)
+            onToggleStar(v);
     }
     
     public void setAlpha(int alpha) {
@@ -127,7 +151,7 @@ public class ShortcutView extends FrameLayout implements OnClickListener {
 
     public void setEditMode(boolean editMode) {
         this.editMode = editMode;
-        this.remove.setVisibility(editMode && isEnabled() ? View.VISIBLE : View.INVISIBLE);
+        this.editBar.setVisibility(editMode && isEnabled() ? View.VISIBLE : View.INVISIBLE);
     }
 
 }
