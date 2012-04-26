@@ -19,14 +19,15 @@
 	        android:layout_alignParentBottom="true" />
 	    
 
-	    <ImageView android:id="@+id/favicon" style="@style/shortcutFavicon" android:visibility="invisible"
-	        android:layout_alignParentLeft="true" android:layout_alignParentTop="true" />
-    
         <LinearLayout android:id="@+id/editBar" style="@style/shortcutEditbar"
-            android:layout_alignParentRight="true" android:layout_alignParentTop="true" android:visibility="invisible">
+            android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentTop="true" android:visibility="invisible">
             <Button android:id="@+id/starToggle" style="@style/shortcutStarToggleButton"  />
             <Button android:id="@+id/remove" style="@style/shortcutRemoveButton"  />
         </LinearLayout>
+	    
+   	    <ImageView android:id="@+id/favicon" style="@style/shortcutFavicon" android:visibility="invisible"
+	        android:layout_alignParentLeft="true" android:layout_alignParentTop="true" />
+    
         
 	</RelativeLayout>
 </labrom.litlbro.widget.ShortcutView>

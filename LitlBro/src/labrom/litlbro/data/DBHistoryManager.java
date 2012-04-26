@@ -69,7 +69,11 @@ public class DBHistoryManager implements HistoryManager {
 
     final Database db;
     private final Executor executor = Executors.newFixedThreadPool(2);
+    
+    // A bunch of caches
     private final Set<String> starredUrls = new HashSet<String>();
+    private final Set<String> starredHosts = new HashSet<String>();
+    private final Set<String> unstarredHosts = new HashSet<String>();
     private final Set<String> blacklistedShortcuts = new HashSet<String>();
     private final Set<String> sessionBlacklistedShortcuts = new HashSet<String>();
     private final Set<String> blacklistedSuggestions = new HashSet<String>();
@@ -206,7 +210,8 @@ public class DBHistoryManager implements HistoryManager {
     public void starHost(final String host) {
         if(host == null)
             return;
-        
+        starredHosts.add(host);
+        unstarredHosts.remove(host);
         executor.execute(new Runnable() {
             public void run() {
                 List<History> history = db.query(new History(), null, "is_starred=0 AND host=?", new String[] {host}, null, "created DESC", null).asList();
@@ -222,7 +227,8 @@ public class DBHistoryManager implements HistoryManager {
     public void unstarHost(final String host) {
         if(host == null)
             return;
-        
+        starredHosts.remove(host);
+        unstarredHosts.add(host);
         executor.execute(new Runnable() {
             public void run() {
                 List<History> history = db.query(new History(), null, "is_starred=1 AND host=?", new String[] {host}, null, "created DESC", null).asList();
@@ -280,11 +286,17 @@ public class DBHistoryManager implements HistoryManager {
                 null, // order by
                 String.valueOf(Math.max(1, nb) + sessionBlacklistedShortcuts.size())).asList();
         // This is needed because we might still be in the process of flagging history
-        if(!sessionBlacklistedShortcuts.isEmpty()) {
+        if(!sessionBlacklistedShortcuts.isEmpty() || !starredHosts.isEmpty() || !unstarredHosts.isEmpty()) {
             for(Iterator<History> iter = history.iterator(); iter.hasNext(); ) {
                 History h = iter.next();
-                if(sessionBlacklistedShortcuts.contains(h.host))
+                if(sessionBlacklistedShortcuts.contains(h.host)) {
                     iter.remove();
+                    continue;
+                }
+                if(unstarredHosts.contains(h.host))
+                    h.starred = 0;
+                else if(starredHosts.contains(h.host))
+                    h.starred = 1;
             }
         }
         Collections.sort(history);

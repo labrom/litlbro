@@ -21,6 +21,7 @@
     <color name="shortcut_border_disabled">#d6d6d6</color>
     <color name="shortcut_bg_disabled">#e4e4e4</color>
     <color name="shortcut_caption_strip">#80000000</color>
+    <color name="shortcut_editbar_bg">#c0ffffff</color>
     
     <color name="options_pane_bg">#ea202d41</color>
     

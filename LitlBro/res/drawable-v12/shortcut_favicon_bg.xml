@@ -11,7 +11,7 @@
 	                android:topRightRadius="0dp"
 	                android:bottomRightRadius="@dimen/shortcutRoundCornerSmall"
 	                android:bottomLeftRadius="0dp" />
-	            <solid android:color="@android:color/white" />
+	            <solid android:color="@color/shortcut_editbar_bg" />
 	        </shape>
 	    </inset>
     </item>

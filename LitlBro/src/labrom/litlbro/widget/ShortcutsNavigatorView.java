@@ -7,7 +7,7 @@ import labrom.litlbro.data.History;
 import labrom.litlbro.icon.IconCache;
 import labrom.litlbro.util.UrlUtil;
 import labrom.litlbro.widget.NavViewPager.NavListener;
-import labrom.litlbro.widget.ShortcutView.OnRemoveShortcutListener;
+import labrom.litlbro.widget.ShortcutView.OnShortcutActionListener;
 import labrom.litlbro.widget.ShortcutsPage.OnEditModeListener;
 import android.content.Context;
 import android.graphics.drawable.LayerDrawable;
@@ -28,7 +28,7 @@ public class ShortcutsNavigatorView extends RelativeLayout implements OnEditMode
     private boolean editMode;
     private IconCache iconCache;
     private OnClickListener onClickListener;
-    private OnRemoveShortcutListener onRemoveListener;
+    private OnShortcutActionListener onShortcutActionListener;
     private OnEditModeListener onEditModeListener;
     private int minMaskWidth;
 
@@ -117,7 +117,7 @@ public class ShortcutsNavigatorView extends RelativeLayout implements OnEditMode
                 break;
             h.detach();
             ShortcutsPage page = shortcutsPages[index / nbPerPage];
-            page.activateShortcut(index % nbPerPage, UrlUtil.simplifyHost(h.host), h.isStarred, iconCache.readBitmap(h.host), h, onClickListener, onRemoveListener);
+            page.activateShortcut(index % nbPerPage, UrlUtil.simplifyHost(h.host), h.isStarred, iconCache.readBitmap(h.host), h, onClickListener, onShortcutActionListener);
             index ++;
         }
     }
@@ -133,13 +133,13 @@ public class ShortcutsNavigatorView extends RelativeLayout implements OnEditMode
     public void setOnShortcutClickListener(OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
     }
-
-    public OnRemoveShortcutListener getOnRemoveListener() {
-        return onRemoveListener;
+    
+    public OnShortcutActionListener getOnShortcutActionListener() {
+        return onShortcutActionListener;
     }
 
-    public void setOnRemoveListener(OnRemoveShortcutListener onRemoveListener) {
-        this.onRemoveListener = onRemoveListener;
+    public void setOnShortcutActionListener(OnShortcutActionListener onShortcutActionListener) {
+        this.onShortcutActionListener = onShortcutActionListener;
     }
 
     public IconCache getIconCache() {

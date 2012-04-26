@@ -137,19 +137,19 @@
     </style>
     <style name="shortcutEditbar">
         <item name="android:background">@drawable/shortcut_editbar_bg</item>
-        <item name="android:gravity">center</item>
-        <item name="android:padding">3.5dp</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">32dp</item>
+        <item name="android:padding">1dp</item>
+        <item name="android:gravity">right</item>
     </style>
     <style name="shortcutRemoveButton">
-        <item name="android:layout_width">25dp</item>
-        <item name="android:layout_height">25dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">2dp</item>
         <item name="android:background">@drawable/shortcut_delete</item>
     </style>
     <style name="shortcutStarToggleButton">
-        <item name="android:layout_width">25dp</item>
-        <item name="android:layout_height">25dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">2dp</item>
         <item name="android:background">@drawable/shortcut_star_toggle</item>
     </style>
     <style name="shortcutStar">

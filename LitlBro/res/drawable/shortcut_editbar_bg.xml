@@ -2,16 +2,16 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
     <item >
         <inset
-            android:insetLeft="@dimen/shortcutInset" android:insetTop="@dimen/shortcutInset">
+            android:insetLeft="@dimen/shortcutInset" android:insetRight="@dimen/shortcutInset" android:insetTop="@dimen/shortcutInset">
 	        <shape>
-	            <!-- http://code.google.com/p/android/issues/detail?id=9161 there is another drawable in drawable-v12 -->
+                <!-- http://code.google.com/p/android/issues/detail?id=9161 but we don't care since bottom radius is the same on the left and right -->
 	            <corners
 	                android:radius="@dimen/shortcutRoundCornerInner"
-	                android:topLeftRadius="0dp"
+	                android:topLeftRadius="@dimen/shortcutRoundCornerInner"
 	                android:topRightRadius="@dimen/shortcutRoundCornerInner"
 	                android:bottomLeftRadius="0dp"
-	                android:bottomRightRadius="@dimen/shortcutRoundCornerSmall" />
-	            <solid android:color="@android:color/white" />
+	                android:bottomRightRadius="0dp" />
+	            <solid android:color="@color/shortcut_editbar_bg" />
 	        </shape>
 	    </inset>
     </item>

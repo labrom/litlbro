@@ -15,7 +15,7 @@ import labrom.litlbro.state.StateBase;
 import labrom.litlbro.suggestion.GetSuggestionsTask;
 import labrom.litlbro.suggestion.Suggestion;
 import labrom.litlbro.widget.ShortcutView;
-import labrom.litlbro.widget.ShortcutView.OnRemoveShortcutListener;
+import labrom.litlbro.widget.ShortcutView.OnShortcutActionListener;
 import labrom.litlbro.widget.ShortcutsNavigatorView;
 import labrom.litlbro.widget.ShortcutsPage.OnEditModeListener;
 import labrom.litlbro.widget.SiteSearchText;
@@ -48,7 +48,7 @@ import android.widget.ListView;
  * @author Romain Laboisse labrom@gmail.com
  * 
  */
-public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher, OnClickListener, OnLongClickListener, OnItemClickListener, OnRemoveShortcutListener, OnEditModeListener {
+public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher, OnClickListener, OnLongClickListener, OnItemClickListener, OnShortcutActionListener, OnEditModeListener {
 
 
     Database db;
@@ -90,7 +90,7 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
         this.shortcutsPane = (ShortcutsNavigatorView)findViewById(R.id.shortcutsPager);
         this.shortcutsPane.setIconCache(this.iconCache);
         this.shortcutsPane.setOnEditModeListener(this);
-        this.shortcutsPane.setOnRemoveListener(this);
+        this.shortcutsPane.setOnShortcutActionListener(this);
         this.shortcutsPane.setOnShortcutClickListener(this);
     }
 
@@ -327,6 +327,15 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
             history.removeHost(h.host, true, false);
             displayShortcuts();
         }
+    }
+    
+    @Override
+    public void onStarShortcut(String host, boolean star) {
+        if(star)
+            history.starHost(host);
+        else
+            history.unstarHost(host);
+        displayShortcuts();
     }
     
     @Override
