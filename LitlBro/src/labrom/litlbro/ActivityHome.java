@@ -1,5 +1,6 @@
 package labrom.litlbro;
 
+
 import java.util.List;
 
 import labrom.litlbro.data.DBHistoryManager;
@@ -9,7 +10,7 @@ import labrom.litlbro.data.HistoryManager;
 import labrom.litlbro.duckduckgo.DuckyManager;
 import labrom.litlbro.gossip.GossipManager;
 import labrom.litlbro.icon.IconCache;
-import labrom.litlbro.shortcut.ShortcutList;
+import labrom.litlbro.shortcut.DisplayShortcutsTask;
 import labrom.litlbro.state.Event;
 import labrom.litlbro.state.State;
 import labrom.litlbro.state.StateBase;
@@ -28,7 +29,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -58,11 +58,11 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
     DuckyManager duckyMgr;
     IconCache iconCache;
     
-    private State state;
+    State state;
 
     private ListView suggestionList;
     private SiteSearchText siteText;
-    private ShortcutsNavigatorView shortcutsPane;
+    ShortcutsNavigatorView shortcutsPane;
     private DisplayShortcutsTask displayShortcutsTask;
     private SharedPreferences prefs;
 
@@ -131,12 +131,6 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
         this.db = null;
     }
     
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-    
-    
     void setUI() {
         if(state == StateBase.HOME || state == StateBase.EDIT_SHORTCUTS) {
             suggestionList.setVisibility(View.GONE);
@@ -174,7 +168,14 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
     private void displayShortcuts() {
         if(displayShortcutsTask != null && displayShortcutsTask.isRunning())
             return;
-        displayShortcutsTask = new DisplayShortcutsTask();
+        displayShortcutsTask = new DisplayShortcutsTask(history, shortcutsPane.getShortcutsCountPerPage() * shortcutsPane.getPagesCount()) {
+            @Override
+            protected void onPostExecute(List<History> result) {
+                super.onPostExecute(result);
+                shortcutsPane.setEditMode(state == StateBase.EDIT_SHORTCUTS);
+                shortcutsPane.setShortcutsQueryResult(result);
+            }
+        };
         displayShortcutsTask.execute();
     }
     
@@ -206,22 +207,7 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
         }
         return super.onKeyUp(keyCode, event);
     }
-    
-//    @Override
-//    public void onBackPressed() {
-//
-//        changeState(Event.BACK);
-//
-//        /*
-//         * If state is null, fall back to default BACK behavior.
-//         */
-//        
-//        if(state != null) {
-//            setUI();
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
+
     
 
     
@@ -348,44 +334,6 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
     private void changeState(Event e) {
         if(state != null)
             state = state.change(e);
-    }
-
-
-    private final class DisplayShortcutsTask extends AsyncTask<Void, Void, List<History>> {
-
-        private final int shortcutsPerPage = shortcutsPane.getShortcutsCountPerPage();
-        private final int maxShortcuts = shortcutsPane.getPagesCount() * shortcutsPerPage;
-
-        private boolean running;
-        
-        public boolean isRunning() {
-            return running;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            running = true;
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-            running = false;
-        }
-
-        @Override
-        protected List<History> doInBackground(Void... params) {
-            ShortcutList shortcuts = new ShortcutList(ActivityHome.this.history.getMostPopularSites(maxShortcuts), ActivityHome.this.history.getStarredSites(maxShortcuts), maxShortcuts);
-            return shortcuts.getFinalHistoryList();
-        }
-
-        @Override
-        protected void onPostExecute(List<History> result) {
-            shortcutsPane.setEditMode(state == StateBase.EDIT_SHORTCUTS);
-            shortcutsPane.setShortcutsQueryResult(result);
-            running = false;
-        }
     }
 
 
