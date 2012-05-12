@@ -169,6 +169,10 @@ public class History extends ActiveRecord implements Comparable<Object> {
         v.put("hide_suggestion", hiddenFromSuggestions);
     }
 
+    /**
+     * Compares using weighted popularity.
+     * @see #getWeightedPopularity()
+     */
     @Override
     public int compareTo(Object another) {
         if(!(another instanceof History))
