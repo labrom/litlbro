@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
-    <gradient android:startColor="@color/home_header_light" android:endColor="@color/home_header_dark" android:type="linear" android:angle="270" />
+    <gradient android:startColor="@color/homeHeaderLight" android:endColor="@color/homeHeaderDark" android:type="linear" android:angle="270" />
 </shape>

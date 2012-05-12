@@ -4,21 +4,21 @@
         <shape>
             <corners android:radius="@dimen/shortcutRoundCorner" />
             <solid android:color="@android:color/transparent" />
-            <stroke android:width="@dimen/shortcutStroke" android:color="@color/shortcut_gradient_stroke" />
+            <stroke android:width="@dimen/shortcutStroke" android:color="@color/shortcutGradientStroke" />
         </shape>
     </item>
     <item android:state_enabled="false">
         <shape>
             <corners android:radius="@dimen/shortcutRoundCorner" />
             <solid android:color="@android:color/transparent" />
-            <stroke android:width="@dimen/shortcutStroke" android:color="@color/shortcut_border_disabled" />
+            <stroke android:width="@dimen/shortcutStroke" android:color="@color/shortcutBorderDisabled" />
         </shape>
     </item>
     <item >
         <shape>
             <corners android:radius="@dimen/shortcutRoundCorner" />
             <solid android:color="@android:color/transparent" />
-            <stroke android:width="@dimen/shortcutStroke" android:color="@color/shortcut_gradient_stroke" />
+            <stroke android:width="@dimen/shortcutStroke" android:color="@color/shortcutGradientStroke" />
         </shape>
     </item>
 </selector>

@@ -28,13 +28,13 @@
 
 
     <style name="optionsPane">
-        <item name="android:background">@color/options_pane_bg</item>
+        <item name="android:background">@color/optionsPaneBg</item>
         <item name="android:padding">6dp</item>
     </style>
     <style name="optionsPaneItem">
-        <item name="android:textColor">@color/text_clear</item>
+        <item name="android:textColor">@color/textClear</item>
         <item name="android:textSize">19sp</item>
-        <item name="android:shadowColor">@color/text_clear_shadow</item>
+        <item name="android:shadowColor">@color/textClearShadow</item>
         <item name="android:shadowDx">0</item>
         <item name="android:shadowDy">0.5</item>
         <item name="android:shadowRadius">1</item>
@@ -67,8 +67,8 @@
     </style>
     
     <style name="suggestions">
-        <item name="android:background">@color/suggestion_item</item>
-        <item name="android:cacheColorHint">@color/suggestion_item</item>
+        <item name="android:background">@color/suggestionItem</item>
+        <item name="android:cacheColorHint">@color/suggestionItem</item>
         <item name="android:padding">6dp</item>
         <item name="android:divider">@drawable/suggestion_separator</item>
         <item name="android:dividerHeight">2px</item>
@@ -120,8 +120,8 @@
     <style name="shortcutCaption">
         <item name="android:background">@drawable/shortcut_caption_strip</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/text_clear</item>
-        <item name="android:shadowColor">@color/text_clear_shadow</item>
+        <item name="android:textColor">@color/textClear</item>
+        <item name="android:shadowColor">@color/textClearShadow</item>
         <item name="android:shadowDx">0.5</item>
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">1</item>
@@ -161,6 +161,11 @@
     <dimen name="shortcutRoundCornerInner">16dp</dimen>
     <dimen name="shortcutInset">1px</dimen>
     <dimen name="shortcutStroke">1px</dimen>
+    
+    <style name="tipDialog">
+    </style>
+    <style name="tipOK"></style>
+    <style name="tipText"></style>
     
 
 </resources>

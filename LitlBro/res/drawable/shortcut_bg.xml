@@ -3,19 +3,19 @@
     <item android:state_pressed="true">
         <shape>
             <corners android:radius="@dimen/shortcutRoundCorner" />
-            <gradient android:startColor="@color/shortcut_gradient_clear_press" android:endColor="@color/shortcut_gradient_dark_press" android:type="linear" android:angle="270" />
+            <gradient android:startColor="@color/shortcutGradientClearPress" android:endColor="@color/shortcutGradientDarkPress" android:type="linear" android:angle="270" />
         </shape>
     </item>
     <item android:state_enabled="false">
         <shape>
             <corners android:radius="@dimen/shortcutRoundCorner" />
-            <solid android:color="@color/shortcut_bg_disabled" />
+            <solid android:color="@color/shortcutBgDisabled" />
         </shape>
     </item>
     <item >
         <shape>
             <corners android:radius="@dimen/shortcutRoundCorner" />
-            <gradient android:startColor="@color/shortcut_gradient_clear" android:endColor="@color/shortcut_gradient_dark" android:type="linear" android:angle="270" />
+            <gradient android:startColor="@color/shortcutGradientClear" android:endColor="@color/shortcutGradientDark" android:type="linear" android:angle="270" />
         </shape>
     </item>
 </selector>
