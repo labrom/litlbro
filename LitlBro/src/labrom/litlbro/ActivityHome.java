@@ -9,6 +9,7 @@ import labrom.litlbro.data.HistoryManager;
 import labrom.litlbro.duckduckgo.DuckyManager;
 import labrom.litlbro.gossip.GossipManager;
 import labrom.litlbro.icon.IconCache;
+import labrom.litlbro.shortcut.ShortcutList;
 import labrom.litlbro.state.Event;
 import labrom.litlbro.state.State;
 import labrom.litlbro.state.StateBase;
@@ -375,7 +376,8 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
 
         @Override
         protected List<History> doInBackground(Void... params) {
-            return ActivityHome.this.history.getMostPopularSites(maxShortcuts);
+            ShortcutList shortcuts = new ShortcutList(ActivityHome.this.history.getMostPopularSites(maxShortcuts), ActivityHome.this.history.getStarredSites(maxShortcuts), maxShortcuts);
+            return shortcuts.getFinalHistoryList();
         }
 
         @Override
