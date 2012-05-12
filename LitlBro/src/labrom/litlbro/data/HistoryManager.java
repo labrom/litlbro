@@ -66,8 +66,15 @@ public interface HistoryManager {
     void starHost(final String host);
 
     List<History> getMostPopularSites(int nb);
+    List<History> getStarredSites(int nb);
 
+    /**
+     * Finds suggestions out of history.
+     * @param query
+     * @return
+     */
     List<Suggestion> getSuggestions(String query);
+
 
 
 }

@@ -72,8 +72,8 @@ public class DBHistoryManager implements HistoryManager {
     
     // A bunch of caches
     private final Set<String> starredUrls = new HashSet<String>();
-    private final Set<String> starredHosts = new HashSet<String>();
-    private final Set<String> unstarredHosts = new HashSet<String>();
+    private final Set<String> starredHosts = Collections.synchronizedSet(new HashSet<String>());
+    private final Set<String> unstarredHosts = Collections.synchronizedSet(new HashSet<String>());
     private final Set<String> blacklistedShortcuts = new HashSet<String>();
     private final Set<String> sessionBlacklistedShortcuts = new HashSet<String>();
     private final Set<String> blacklistedSuggestions = new HashSet<String>();
@@ -220,6 +220,7 @@ public class DBHistoryManager implements HistoryManager {
                     h.star();
                     h.update();
                 }
+                starredHosts.remove(host);
             }
         });
     }
@@ -237,6 +238,7 @@ public class DBHistoryManager implements HistoryManager {
                     h.unstar();
                     h.update();
                 }
+                unstarredHosts.remove(host);
             }
         });
     }
@@ -278,16 +280,17 @@ public class DBHistoryManager implements HistoryManager {
     @Override
     public List<History> getMostPopularSites(int nb) {
         // Query all history grouped by host
-        // Popularity is a weighted average (URLs with many occurrences weight more than those with few occurrences)
-        List<History> history = db.query(new History(), 
-                new String[] {"host", "max(is_starred) AS is_starred", "sum(popularity * nb_views) / sum(nb_views) AS popularity", "sum(nb_views) AS nb_views"}, // projection 
+        // Popularity is a weighted average (URLs with many occurrences weigh more than those with fewer occurrences)
+        List<History> popularSites = db.query(new History(), 
+                new String[] {"host", "max(is_starred) AS is_starred", "sum(popularity * nb_views) / sum(nb_views) AS popularity", "sum(nb_views) AS nb_views", "max(last_viewed) AS last_viewed"}, // projection 
                 "hide_shortcut=0", null, // selection + args
                 "host", // group by
-                null, // order by
-                String.valueOf(Math.max(1, nb) + sessionBlacklistedShortcuts.size())).asList();
+                "last_viewed DESC", // order by
+                String.valueOf(Math.max(1, nb) + sessionBlacklistedShortcuts.size()) // limit
+                ).asList();
         // This is needed because we might still be in the process of flagging history
         if(!sessionBlacklistedShortcuts.isEmpty() || !starredHosts.isEmpty() || !unstarredHosts.isEmpty()) {
-            for(Iterator<History> iter = history.iterator(); iter.hasNext(); ) {
+            for(Iterator<History> iter = popularSites.iterator(); iter.hasNext(); ) {
                 History h = iter.next();
                 if(sessionBlacklistedShortcuts.contains(h.host)) {
                     iter.remove();
@@ -299,8 +302,22 @@ public class DBHistoryManager implements HistoryManager {
                     h.starred = 1;
             }
         }
-        Collections.sort(history);
-        return history;
+        Collections.sort(popularSites); // Natural order
+        return popularSites;
+    }
+
+    @Override
+    public List<History> getStarredSites(int nb) {
+        List<History> starredSites = db.query(new History(),
+                new String[] {"host", "sum(is_starred) AS nb_starred", "sum(popularity * nb_views) / sum(nb_views) AS popularity", "sum(nb_views) AS nb_views", "max(last_viewed) AS last_viewed"}, // projection 
+                "hide_shortcut=0", null, // selection + args
+                "host", // group by
+                "nb_starred>0", // having
+                "last_viewed DESC", // order by
+                String.valueOf(Math.max(1, nb) + sessionBlacklistedShortcuts.size()) // limit
+                ).asList();
+        Collections.sort(starredSites); // Natural order
+        return starredSites;
     }
 
     @Override
