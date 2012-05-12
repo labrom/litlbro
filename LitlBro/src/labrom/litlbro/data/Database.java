@@ -129,6 +129,12 @@ public class Database {
         return new ActiveRecordList<T>(this, proto, c);
     }
 
+    public <T extends ActiveRecord> ActiveRecordList<T> query(T proto, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit) {
+        ensureOpen();
+        Cursor c = db.query(proto.getTableName(), columns, selection, selectionArgs, groupBy, having, orderBy, limit);
+        return new ActiveRecordList<T>(this, proto, c);
+    }
+
     public <T extends ActiveRecord> ActiveRecordList<T> query(T proto, String selection, String[] selectionArgs, String orderBy) {
         return query(proto, null, selection, selectionArgs, null, orderBy, null);
 	}
