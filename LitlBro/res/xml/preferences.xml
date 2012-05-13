@@ -20,6 +20,10 @@
         <intent android:action="labrom.litlbro.prefs.blacklist" />
     </PreferenceScreen>
 
+    <PreferenceScreen android:title="@string/prefTipsReset">
+        <intent android:action="labrom.litlbro.prefs.tips" />
+    </PreferenceScreen>
+
     <PreferenceCategory android:title="@string/prefCategoryShake">
 	    <CheckBoxPreference
 	        android:key="shakeNeedsConfirm"

@@ -38,6 +38,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".ActivityPrefsTips">
+            <intent-filter>
+                <action android:name="labrom.litlbro.prefs.tips"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         
     </application>
 </manifest>

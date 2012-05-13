@@ -17,6 +17,7 @@ import labrom.litlbro.state.StateBase;
 import labrom.litlbro.suggestion.GetSuggestionsTask;
 import labrom.litlbro.suggestion.Suggestion;
 import labrom.litlbro.widget.ShortcutView;
+import labrom.litlbro.widget.TipDialog;
 import labrom.litlbro.widget.ShortcutView.OnShortcutActionListener;
 import labrom.litlbro.widget.ShortcutsNavigatorView;
 import labrom.litlbro.widget.ShortcutsPage.OnEditModeListener;
@@ -24,6 +25,7 @@ import labrom.litlbro.widget.SiteSearchText;
 import labrom.litlbro.widget.SiteSearchText.OnDoneHandler;
 import labrom.litlbro.widget.SuggestionAdapter;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -34,6 +36,7 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -137,8 +140,15 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
             shortcutsPane.setVisibility(View.VISIBLE);
 //                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 //                imm.hideSoftInputFromWindow(this.siteText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+            
             displayShortcuts();
-
+            
+            // In HOME state, display next tip if available
+            if(state == StateBase.HOME) {
+                Dialog tipDlg = TipDialog.createNextTip(this);
+                if(tipDlg != null)
+                    tipDlg.show(); // Not using Activity.showDialog because tips are showed once only and we don't want to reuse them
+            }
         } else if(state == StateBase.SUGGESTIONS) {
             if(!suggestionList.isShown()) {
                 this.suggestionList.setVisibility(View.VISIBLE);
@@ -206,6 +216,17 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
             return true;
         }
         return super.onKeyUp(keyCode, event);
+    }
+    
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        if(id == TipDialog.DIALOG_ID) {
+            Dialog d = TipDialog.createNextTip(this);
+            if(d != null)
+                return d;
+        }
+        return super.onCreateDialog(id);
     }
 
     

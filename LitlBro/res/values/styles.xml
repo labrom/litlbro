@@ -161,11 +161,25 @@
     <dimen name="shortcutRoundCornerInner">16dp</dimen>
     <dimen name="shortcutInset">1px</dimen>
     <dimen name="shortcutStroke">1px</dimen>
-    
-    <style name="tipDialog">
+
+	<style name="tipDialogFrame" parent="@android:style/Theme.Translucent.NoTitleBar">
+		<item name="android:windowIsFloating">false</item>
+		<item name="android:windowNoTitle">true</item>
+	</style>
+    <style name="tipLabel">
+        <item name="android:background">@drawable/tip_bg</item>
+        <item name="android:padding">10dp</item>
     </style>
-    <style name="tipOK"></style>
-    <style name="tipText"></style>
+    <style name="tipText">
+        <item name="android:textColor">@color/textDarkGray</item>
+        <item name="android:paddingBottom">6dp</item>
+    </style>
+    <style name="tipOK">
+        <item name="android:textColor">@color/textDarkGray</item>
+        <item name="android:background">@drawable/tip_button_bg</item>
+        <item name="android:layout_gravity">right</item>
+        <item name="android:padding">4dp</item>
+    </style>
     
 
 </resources>

@@ -28,5 +28,10 @@
     <string name="prefHistoryBlacklistTitle">Manage history blacklist</string>
     <string name="prefHistoryBlacklistReinstate">Add back</string>
     <string name="prefHistoryBlacklistEmpty">History blacklist is currently empty.\r\n\r\nYou can add shortcuts to the blacklist by long-pressing any shortcut then tapping the close button of the shortcut you want to remove.</string>
+    <string name="prefTipsReset">Display tips again</string>
+    
     <string name="tipOK">Got it!</string>
+    <string name="tipSearch">Click bro\'s head to display suggestions or search for text you typed in.</string>
+    <string name="tipShortcuts">Long-press shortcuts to star/unstar or remove, then hit back to leave edit mode.</string>
+    <string name="tipSettings">Long-press bro\'s head for settings.</string>
 </resources>
