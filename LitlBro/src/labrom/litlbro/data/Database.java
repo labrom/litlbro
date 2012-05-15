@@ -153,5 +153,9 @@ public class Database {
         return result;
 	}
 	
+	public <T extends ActiveRecord> int update(T proto, ContentValues values, String selection, String[] selectionArgs) {
+	    return db.update(proto.getTableName(), values, selection, selectionArgs);
+	}
+	
 
 }

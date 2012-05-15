@@ -168,7 +168,12 @@ public class History extends ActiveRecord implements Comparable<Object> {
         v.put("hide_shortcut", hiddenFromShortcuts);
         v.put("hide_suggestion", hiddenFromSuggestions);
     }
-
+    
+    public void populateForStarred(ContentValues v) {
+        v.put("starred", starred);
+        v.put("is_starred", isStarred);
+    }
+    
     /**
      * Compares using weighted popularity.
      * @see #getWeightedPopularity()

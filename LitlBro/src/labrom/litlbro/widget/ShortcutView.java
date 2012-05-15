@@ -19,7 +19,7 @@ public class ShortcutView extends FrameLayout implements OnClickListener {
     
     public interface OnShortcutActionListener {
         void onRemoveShortcut(ViewGroup shortcutView, View removeButton);
-        void onStarShortcut(String host, boolean star);
+        void onStarShortcut(Object tag, boolean star);
     }
     
     private TextView caption;
@@ -121,8 +121,8 @@ public class ShortcutView extends FrameLayout implements OnClickListener {
             onShortcutActionListener.onRemoveShortcut(this, remove);
         } else if(v == starToggle) {
             boolean currentlyStarred = star.getVisibility() == View.VISIBLE;
+            onShortcutActionListener.onStarShortcut(getTag(), !currentlyStarred); // Tag is used as the metadata for actions
             setStarred(!currentlyStarred);
-            onShortcutActionListener.onStarShortcut(caption.getText().toString(), !currentlyStarred);
         }
     }
     

@@ -17,13 +17,13 @@ import labrom.litlbro.state.StateBase;
 import labrom.litlbro.suggestion.GetSuggestionsTask;
 import labrom.litlbro.suggestion.Suggestion;
 import labrom.litlbro.widget.ShortcutView;
-import labrom.litlbro.widget.TipDialog;
 import labrom.litlbro.widget.ShortcutView.OnShortcutActionListener;
 import labrom.litlbro.widget.ShortcutsNavigatorView;
 import labrom.litlbro.widget.ShortcutsPage.OnEditModeListener;
 import labrom.litlbro.widget.SiteSearchText;
 import labrom.litlbro.widget.SiteSearchText.OnDoneHandler;
 import labrom.litlbro.widget.SuggestionAdapter;
+import labrom.litlbro.widget.TipDialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.SearchManager;
@@ -36,7 +36,6 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -338,7 +337,8 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
     }
     
     @Override
-    public void onStarShortcut(String host, boolean star) {
+    public void onStarShortcut(Object tag, boolean star) {
+        String host = ((History)tag).host;
         if(star)
             history.starHost(host);
         else

@@ -10,6 +10,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import labrom.litlbro.suggestion.Suggestion;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 
@@ -68,7 +69,7 @@ public class DBHistoryManager implements HistoryManager {
     }
 
     final Database db;
-    private final Executor executor = Executors.newFixedThreadPool(2);
+    private final Executor executor = Executors.newFixedThreadPool(1);
     
     // A bunch of caches
     private final Set<String> starredUrls = new HashSet<String>();
@@ -214,13 +215,17 @@ public class DBHistoryManager implements HistoryManager {
         unstarredHosts.remove(host);
         executor.execute(new Runnable() {
             public void run() {
-                List<History> history = db.query(new History(), null, "is_starred=0 AND host=?", new String[] {host}, null, "created DESC", null).asList();
-                for(History h : history) {
-                    starredUrls.add(h.url);
-                    h.star();
-                    h.update();
-                }
-                starredHosts.remove(host);
+//                List<History> history = db.query(new History(), null, "is_starred=0 AND host=?", new String[] {host}, null, "created DESC", null).asList();
+//                for(History h : history) {
+//                    starredUrls.add(h.url);
+//                    h.star();
+//                    h.update();
+//                }
+                History h = new History();
+                h.star();
+                ContentValues vals = new ContentValues();
+                h.populateForStarred(vals);
+                db.update(h, vals, "is_starred=0 AND host=?", new String[] {host});
             }
         });
     }
@@ -232,13 +237,17 @@ public class DBHistoryManager implements HistoryManager {
         unstarredHosts.add(host);
         executor.execute(new Runnable() {
             public void run() {
-                List<History> history = db.query(new History(), null, "is_starred=1 AND host=?", new String[] {host}, null, "created DESC", null).asList();
-                for(History h : history) {
-                    starredUrls.remove(h.url);
-                    h.unstar();
-                    h.update();
-                }
-                unstarredHosts.remove(host);
+//                List<History> history = db.query(new History(), null, "is_starred=1 AND host=?", new String[] {host}, null, "created DESC", null).asList();
+//                for(History h : history) {
+//                    starredUrls.remove(h.url);
+//                    h.unstar();
+//                    h.update();
+//                }
+                History h = new History();
+                h.unstar();
+                ContentValues vals = new ContentValues();
+                h.populateForStarred(vals);
+                db.update(h, vals, "is_starred=1 AND host=?", new String[] {host});
             }
         });
     }
@@ -317,6 +326,27 @@ public class DBHistoryManager implements HistoryManager {
                 String.valueOf(Math.max(1, nb) + sessionBlacklistedShortcuts.size()) // limit
                 ).asList();
         Collections.sort(starredSites); // Natural order
+        
+        // Add/remove cached stuff if needed
+        Set<String> starredHostsInDb = new HashSet<String>();
+        for(Iterator<History> iter = starredSites.iterator(); iter.hasNext(); ) {
+            History h = iter.next();
+            if(unstarredHosts.contains(h.host))
+                iter.remove(); // TODO Could this lead to funny effects like the sudden houdinizing of a shortcut?
+            starredHostsInDb.add(h.host);
+        }
+        if(!this.starredHosts.isEmpty()) {
+            HashSet<String> hostsToAdd = new HashSet<String>(this.starredHosts);
+            hostsToAdd.removeAll(starredHostsInDb);
+            for(String hostToAdd : hostsToAdd) {
+                History h = new History();
+                h.host = hostToAdd;
+                h.starred = 1;
+                starredSites.add(0, h); // Add at beginning to maximize chances of getting just-modified shortcuts
+            }
+        }
+        
+        
         return starredSites;
     }
 
