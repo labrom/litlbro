@@ -1,5 +1,7 @@
 package labrom.litlbro.data;
 
+import labrom.data.ActiveRecord;
+import labrom.data.SelectionArgs;
 import labrom.litlbro.util.UrlUtil;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -100,5 +102,13 @@ public class HistoryBlacklist extends ActiveRecord {
         bl.hydrateFromCursor(c);
         return bl;
     }
+
+	@Override
+	protected void hydrateFromContentValues(ContentValues v) {
+	}
+
+	@Override
+	protected void populateForQueryByExample(SelectionArgs selection) {
+	}
 
 }

@@ -1,5 +1,7 @@
 package labrom.litlbro.data;
 
+import labrom.data.ActiveRecord;
+import labrom.data.SelectionArgs;
 import android.content.ContentValues;
 import android.database.Cursor;
 
@@ -115,4 +117,12 @@ public class SitePrefs extends ActiveRecord {
         this.javascriptEnabledLast2 = c.getShort(c.getColumnIndexOrThrow("javascript_last2")) > 0;
         this.javascriptEnabledLast3 = c.getShort(c.getColumnIndexOrThrow("javascript_last3")) > 0;
     }
+
+	@Override
+	protected void hydrateFromContentValues(ContentValues v) {
+	}
+
+	@Override
+	protected void populateForQueryByExample(SelectionArgs selection) {
+	}
 }

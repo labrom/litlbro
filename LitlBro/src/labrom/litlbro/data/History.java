@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import labrom.data.ActiveRecord;
+import labrom.data.SelectionArgs;
 import labrom.litlbro.util.UrlUtil;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -202,6 +204,14 @@ public class History extends ActiveRecord implements Comparable<Object> {
         isStarred = false;
         starred = 0;
     }
+
+	@Override
+	protected void hydrateFromContentValues(ContentValues v) {
+	}
+
+	@Override
+	protected void populateForQueryByExample(SelectionArgs selection) {
+	}
 
 
 

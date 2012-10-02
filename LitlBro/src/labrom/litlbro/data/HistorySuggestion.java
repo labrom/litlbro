@@ -1,5 +1,7 @@
 package labrom.litlbro.data;
 
+import labrom.data.ActiveRecord;
+import labrom.data.SelectionArgs;
 import labrom.litlbro.suggestion.Suggestion;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -105,4 +107,12 @@ public class HistorySuggestion extends ActiveRecord implements Suggestion {
     public String toString() {
         return "History: " + (title != null && title.length() > 0 ? title : url);
     }
+
+	@Override
+	protected void hydrateFromContentValues(ContentValues v) {
+	}
+
+	@Override
+	protected void populateForQueryByExample(SelectionArgs selection) {
+	}
 }

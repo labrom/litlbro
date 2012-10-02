@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import labrom.data.ActiveRecordList;
 import labrom.litlbro.suggestion.Suggestion;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -49,7 +50,7 @@ public class DBHistoryManager implements HistoryManager {
             // Flag previous history (the one used for shortcuts only) as hidden
             // Also set the hide_suggestion flag although it's not used as of now
             if(removeFromShortcuts || removeFromSuggestions) {
-                List<History> history = db.query(new History(), "host=?", new String[] {host}, "last_viewed DESC").asList();
+                List<History> history = db.query(new History(), null, "host=?", new String[] {host}, "last_viewed DESC").asList();
                 for(History h : history) {
                     h.hiddenFromShortcuts = removeFromShortcuts;
                     h.hiddenFromSuggestions = removeFromSuggestions;
@@ -58,7 +59,7 @@ public class DBHistoryManager implements HistoryManager {
             }
             else if(bl.reinstated > 0) {
 //                List<History> history = db.query(new History(), "last_viewed>? AND host=? AND (hide_suggestion=1 OR hide_shortcut=1)", new String[] {String.valueOf(bl.reinstated), host}, null).asList();
-                List<History> history = db.query(new History(), "host=? AND (hide_suggestion=1 OR hide_shortcut=1)", new String[] {host}, null).asList();
+                List<History> history = db.query(new History(), null, "host=? AND (hide_suggestion=1 OR hide_shortcut=1)", new String[] {host}, null).asList();
                 for(History h : history) {
                     h.hiddenFromShortcuts = false;
                     h.hiddenFromSuggestions = false;
@@ -105,7 +106,7 @@ public class DBHistoryManager implements HistoryManager {
                 }
                 
                 // Load host blacklist
-                List<HistoryBlacklist> blacklist = db.query(new HistoryBlacklist(), null, null, null).asList();
+                List<HistoryBlacklist> blacklist = db.query(new HistoryBlacklist(), null, null, null, null).asList();
                 for(HistoryBlacklist bl : blacklist) {
                     if(bl.hideShortcut)
                         blacklistedShortcuts.add(bl.host);
@@ -354,7 +355,7 @@ public class DBHistoryManager implements HistoryManager {
     public List<Suggestion> getSuggestions(String query) {
         if(query == null)
             return Collections.emptyList();
-        List<Suggestion> suggestions = new ArrayList<Suggestion>(db.query(new HistorySuggestion(), 
+        List<Suggestion> suggestions = new ArrayList<Suggestion>(db.query(new HistorySuggestion(), null,
                 "searchable MATCH ?", new String[] {query + "*"}, null).asList());
         for(Suggestion sugg : suggestions) {
             if(starredUrls.contains(sugg.getUrl()))

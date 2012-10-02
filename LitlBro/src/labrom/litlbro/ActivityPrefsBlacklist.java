@@ -1,6 +1,6 @@
 package labrom.litlbro;
 
-import labrom.litlbro.data.ActiveRecordList;
+import labrom.data.ActiveRecordList;
 import labrom.litlbro.data.DBHistoryManager;
 import labrom.litlbro.data.Database;
 import labrom.litlbro.data.HistoryBlacklist;
@@ -31,7 +31,7 @@ public class ActivityPrefsBlacklist extends ListActivity implements OnReinstateL
         super.onStart();
         this.db = Database.create(getApplicationContext());
         this.history = new DBHistoryManager(this.db);
-        ActiveRecordList<HistoryBlacklist> lst = this.db.query(new HistoryBlacklist(), "reinstated=0 OR hide_shortcut=1 OR hide_suggestion=1", null, null);
+        ActiveRecordList<HistoryBlacklist> lst = this.db.query(new HistoryBlacklist(), null, "reinstated=0 OR hide_shortcut=1 OR hide_suggestion=1", null, null);
         Cursor c = lst.getCursor();
         startManagingCursor(c);
         ((CursorAdapter)getListAdapter()).swapCursor(c);
