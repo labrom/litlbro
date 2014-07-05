@@ -6,12 +6,13 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="FullscreenTheme" parent="android:Theme.Holo">
-        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+    <style name="FullscreenThemeBase" parent="android:Theme.Holo.Light.NoActionBar">
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowBackground">@null</item>
         <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
         <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+    <style name="FullscreenTheme" parent="FullscreenThemeBase">
     </style>
 
     <style name="ButtonBar">
@@ -25,9 +26,6 @@
     <style name="ButtonBarButton" />
 
 
-    <style name="FullscreenActionBarStyle" parent="android:Widget.Holo.ActionBar">
-        <item name="android:background">@color/black_overlay</item>
-    </style>
 
 
 

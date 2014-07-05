@@ -114,15 +114,6 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
     private ShakeManager shaker;
     private ShakeDialog shakeDialog;
     private AlertDialog currentlyShowingShakeDialog;
-    private SystemUiHider systemUiHider;
-    Handler hideHandler = new Handler();
-    Runnable hideRunnable = new Runnable() {
-        @Override
-        public void run() {
-            getActionBar().hide();
-            systemUiHider.hide();
-        }
-    };
 
 
     private PagePublisherWrapper pagePublisher;
@@ -136,31 +127,6 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
         shakeDialog = new ShakeDialog(this, prefs, this);
 
         this.browser = (BroWebView) findViewById(R.id.web);
-        systemUiHider = new SystemUiHider(findViewById(R.id.root));
-        systemUiHider.setup();
-        systemUiHider.setOnVisibilityChangeListener(new SystemUiHider.OnVisibilityChangeListener() {
-            @Override
-            public void onVisibilityChange(boolean visible) {
-//                        controlsView.animate()
-//                                .translationY(visible ? 0 : controlsView.getHeight())
-//                                .setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime));
-                if (visible) {
-                    delayedHide(3000);
-                }
-            }
-        });
-        this.browser.setListener(new BroWebView.Listener() {
-            @Override
-            public void onShowChrome() {
-                systemUiHider.show();
-            }
-
-            @Override
-            public void onHideChrome() {
-                systemUiHider.hide();
-            }
-        });
-
         this.optionsPane = findViewById(R.id.optionsPane);
         this.starToggle = (CompoundButton) this.optionsPane.findViewById(R.id.star);
         this.starToggle.setOnCheckedChangeListener(this);
@@ -201,26 +167,6 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
 
         this.state = StateBase.NAVIGATE_INTENT;
     }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        // Trigger the initial hide() shortly after the activity has been
-        // created, to briefly hint to the user that UI controls
-        // are available.
-        delayedHide(100);
-    }
-
-    /**
-     * Schedules a call to hide() in [delay] milliseconds, canceling any
-     * previously scheduled calls.
-     */
-    private void delayedHide(int delayMillis) {
-        hideHandler.removeCallbacks(hideRunnable);
-        hideHandler.postDelayed(hideRunnable, delayMillis);
-    }
-
 
     @Override
     protected void onStart() {
