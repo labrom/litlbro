@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:state_pressed="true">
+        <shape>
+            <corners android:radius="@dimen/shortcutRoundCorner" />
+            <gradient android:startColor="@color/shortcutGradientClearPress" android:endColor="@color/shortcutGradientDarkPress" android:type="linear" android:angle="270" />
+        </shape>
+    </item>
+    <item android:state_enabled="false">
+        <shape>
+            <corners android:radius="@dimen/shortcutRoundCorner" />
+            <solid android:color="@color/shortcutBgDisabled" />
+        </shape>
+    </item>
+    <item >
+        <shape>
+            <corners android:radius="@dimen/shortcutRoundCorner" />
+            <gradient android:startColor="@color/shortcutGradientClear" android:endColor="@color/shortcutGradientDark" android:type="linear" android:angle="270" />
+        </shape>
+    </item>
+</selector>

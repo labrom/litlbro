@@ -1,0 +1,5 @@
+<resources>
+
+    <string name="gossipApi">http://sugg.hk.search.yahoo.net/gossip-hk-ura</string>
+
+</resources>

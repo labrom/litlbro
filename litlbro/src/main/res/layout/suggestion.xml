@@ -1,0 +1,21 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/suggestion"
+    android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+    <ImageView android:id="@+id/icon" android:src="@drawable/star_icon" style="@style/suggestionIcon"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:visibility="invisible" />
+    
+    <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/icon" android:layout_centerInParent="true" android:layout_alignWithParentIfMissing="true" android:layout_alignParentLeft="true">
+	    
+	    <TextView android:id="@+id/caption" style="@style/suggestionCaption"
+	        android:layout_width="wrap_content" android:layout_height="wrap_content"  />
+	    
+	    <TextView android:id="@+id/url" style="@style/suggestionUrl"
+	        android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        
+    </LinearLayout>
+    
+</RelativeLayout>

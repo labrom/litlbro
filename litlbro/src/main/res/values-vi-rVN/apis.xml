@@ -1,0 +1,5 @@
+<resources>
+
+    <string name="gossipApi">http://sugg.vn.search.yahoo.net/gossip-vn-sayt/</string>
+
+</resources>

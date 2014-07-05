@@ -1,0 +1,39 @@
+<resources>
+
+    <color name="black_overlay">#66000000</color>
+
+    <color name="homeHeaderLight">#d9e0e9</color>
+    <color name="homeHeaderDark">#737e8f</color>
+    <color name="homeBg">@color/homeHeaderDark</color>
+
+    <color name="pagerNavBar">@android:color/white</color>
+    <color name="pagerNavMask">@color/homeHeaderDark</color>
+
+    <color name="suggestionItemPress">@color/suggestionItemDarker</color>
+    <color name="suggestionItem">#e6e3e1</color>
+    <color name="suggestionItemLighter">#f7f3f1</color>
+    <color name="suggestionItemDarker">#d2cfce</color>
+
+    <color name="shortcutGradientClear">#ea808d9e</color>
+    <color name="shortcutGradientDark">#ea202d39</color>
+    <color name="shortcutGradientClearPress">#ea606d7e</color>
+    <color name="shortcutGradientDarkPress">#aa000d19</color>
+    <color name="shortcutGradientStroke">#ea202030</color>
+    <color name="shortcutBorderDisabled">#d6d6d6</color>
+    <color name="shortcutBgDisabled">#e4e4e4</color>
+    <color name="shortcutCaptionStrip">#80000000</color>
+    <color name="shortcutEditbarBg">#c0ffffff</color>
+
+    <color name="optionsPaneBg">#ea202d41</color>
+
+    <color name="textDarkGray">#505050</color>
+    <color name="textClear">#fcfcfc</color>
+    <color name="textClearShadow">#90303030</color>
+    <color name="textClearShadowLighter">#60303030</color>
+
+    <color name="tipBg">#f8f3e2a4</color>
+    <color name="tipButtonBg">#f8ddd4b0</color>
+    <color name="tipButtonLightBg">#f8f3e8c2</color>
+    <color name="tipButtonBorder">#f8d8d0b2</color>
+
+</resources>

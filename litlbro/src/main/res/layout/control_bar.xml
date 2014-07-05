@@ -1,0 +1,48 @@
+<labrom.litlbro.widget.ControlBar xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/controlBar"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:visibility="invisible">
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/controlBarTitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="19dp"
+            android:indeterminateOnly="false"
+            android:max="100"
+            android:progressDrawable="@drawable/progress" />
+    </FrameLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/controlPad"
+        style="@style/controlBarPad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true">
+
+        <ToggleButton
+            android:id="@+id/jsToggle"
+            style="controlBarJsToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/js_toggle"
+            android:checked="false"
+            android:textOff=""
+            android:textOn="" />
+
+    </RelativeLayout>
+
+</labrom.litlbro.widget.ControlBar>

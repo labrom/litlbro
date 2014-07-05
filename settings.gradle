@@ -1,0 +1,3 @@
+include ':litlbro', ':colibri'
+
+project(':colibri').projectDir = new File(settingsDir, '../colibri')
