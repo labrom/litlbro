@@ -354,27 +354,6 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
             return true; // Means we intercept Menu hardware key when control bar is shown too
         }
 
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            changeState(Event.BACK);
-
-            if (state == null) {
-                if (this.browser.canGoBack()) {
-                    state = StateBase.PAGE_LOADING;
-                    NavFlags flags = new NavFlags();
-                    flags.isBack = true;
-                    this.browser.setTag(R.id.tag_nav_flags, flags);
-                    this.browser.goBack();
-                    setUI();
-                    return true;
-                } else /*if(gotViewIntent())*/ {
-                    return super.onKeyUp(keyCode, event);
-                }
-            } else {
-                setUI();
-                return true;
-            }
-        }
-
         if (keyCode == KeyEvent.KEYCODE_SEARCH) {
             onGoHome();
             return true;
@@ -383,23 +362,25 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
         return super.onKeyUp(keyCode, event);
     }
 
-//  @Override
-//  public void onBackPressed() {
-//
-//      changeState(Event.BACK);
-//
-//      if(state == null) {
-//          if(this.browser.canGoBack()) {
-//              state = StateBase.PAGE_LOADING;
-//              this.browser.goBack();
-//              setUI();
-//          } else /*if(gotViewIntent())*/ {
-//              super.onBackPressed();
-//          }
-//      } else {
-//          setUI();
-//      }
-//  }
+    @Override
+    public void onBackPressed() {
+        changeState(Event.BACK);
+
+        if (state == null) {
+            if (this.browser.canGoBack()) {
+                state = StateBase.PAGE_LOADING;
+                NavFlags flags = new NavFlags();
+                flags.isBack = true;
+                this.browser.setTag(R.id.tag_nav_flags, flags);
+                this.browser.goBack();
+                setUI();
+            } else /*if(gotViewIntent())*/ {
+                super.onBackPressed();
+            }
+        } else {
+            setUI();
+        }
+    }
 
 
     private void changeState(Event e) {
