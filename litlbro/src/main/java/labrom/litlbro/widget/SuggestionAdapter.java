@@ -1,5 +1,6 @@
 package labrom.litlbro.widget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
@@ -37,7 +38,7 @@ public class SuggestionAdapter extends BaseAdapter implements Observer {
 	};
     
     public SuggestionAdapter(Context ctx, List<Suggestion> suggs) {
-        this.inflater = (LayoutInflater)ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.inflater = LayoutInflater.from(ctx);
         this.handler = new Handler(Looper.getMainLooper());
         setSuggestions(suggs);
     }
@@ -84,9 +85,9 @@ public class SuggestionAdapter extends BaseAdapter implements Observer {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
-        ViewHolder vh = null;
+        ViewHolder vh;
         if(v == null) {
-            v = this.inflater.inflate(R.layout.suggestion, null);
+            v = this.inflater.inflate(R.layout.suggestion, parent);
             vh = new ViewHolder(v);
         } else {
             vh = (ViewHolder)v.getTag();
@@ -126,6 +127,7 @@ public class SuggestionAdapter extends BaseAdapter implements Observer {
         TextView caption;
         TextView url;
         ImageView icon;
+        @SuppressLint("WrongViewCast")
         ViewHolder(View v) {
             caption = (TextView)v.findViewById(R.id.caption);
             url = (TextView)v.findViewById(R.id.url);

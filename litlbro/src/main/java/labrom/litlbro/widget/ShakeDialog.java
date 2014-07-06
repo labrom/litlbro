@@ -52,7 +52,7 @@ public class ShakeDialog {
                     listener.onGoHome();
                     break;
                 }
-                editor.commit();
+                editor.apply();
                 dialog.dismiss();
             }
         });

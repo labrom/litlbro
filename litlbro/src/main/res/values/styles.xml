@@ -108,7 +108,7 @@
         <item name="android:cacheColorHint">@color/suggestionItem</item>
         <item name="android:padding">6dp</item>
         <item name="android:divider">@drawable/suggestion_separator</item>
-        <item name="android:dividerHeight">2px</item>
+        <item name="android:dividerHeight">1dp</item>
     </style>
     <style name="suggestion">
         <item name="android:padding">6dp</item>
@@ -137,7 +137,7 @@
     </style>
     <style name="shortcutsPageIndicator">
         <item name="android:background">@drawable/pager_indicator</item>
-        <item name="android:layout_height">10px</item>
+        <item name="android:layout_height">5dp</item>
     </style>
     <integer name="shortcutPageIndicatorMaskMin">120</integer>
     <style name="shortcuts">

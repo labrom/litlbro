@@ -44,7 +44,7 @@ public class TipDialog extends Dialog {
         for(TipMeta tip : tips) {
             editor.remove(tip.prefKey);
         }
-        editor.commit();
+        editor.apply();
     }
     
     private static boolean wasShown(SharedPreferences prefs, TipMeta tip) {
@@ -52,7 +52,7 @@ public class TipDialog extends Dialog {
     }
     
     private static void savePref(SharedPreferences prefs, TipMeta tip) {
-        prefs.edit().putBoolean(tip.prefKey, true).commit();
+        prefs.edit().putBoolean(tip.prefKey, true).apply();
     }
 
     private static class TipMeta {
