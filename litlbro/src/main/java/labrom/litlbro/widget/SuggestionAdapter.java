@@ -87,7 +87,7 @@ public class SuggestionAdapter extends BaseAdapter implements Observer {
         View v = convertView;
         ViewHolder vh;
         if(v == null) {
-            v = this.inflater.inflate(R.layout.suggestion, parent);
+            v = this.inflater.inflate(R.layout.suggestion, parent, false);
             vh = new ViewHolder(v);
         } else {
             vh = (ViewHolder)v.getTag();
