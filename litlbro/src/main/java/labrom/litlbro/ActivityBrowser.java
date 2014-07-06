@@ -94,8 +94,8 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
     BroWebView browser;
     ControlBar controlBar;
     View optionsPane;
-    CompoundButton starToggle;
-    CompoundButton jsToggle;
+    CompoundButton optionsStarToggle;
+    CompoundButton optionsJsToggle;
     BrowserClient viewClient;
     ProgressBar progress;
     private Animation pushOptions;
@@ -125,10 +125,9 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
 
         this.browser = (BroWebView) findViewById(R.id.web);
         this.optionsPane = findViewById(R.id.optionsPane);
-        this.starToggle = (CompoundButton) this.optionsPane.findViewById(R.id.star);
-        this.starToggle.setOnCheckedChangeListener(this);
-        this.jsToggle = (CompoundButton) this.optionsPane.findViewById(R.id.optionsJsToggle);
-        this.jsToggle.setOnCheckedChangeListener(this);
+        this.optionsStarToggle = (CompoundButton) this.optionsPane.findViewById(R.id.star);
+        this.optionsStarToggle.setOnCheckedChangeListener(this);
+        this.optionsJsToggle = (CompoundButton) this.optionsPane.findViewById(R.id.optionsJsToggle);
         findViewById(R.id.share).setOnClickListener(this);
         findViewById(R.id.shareScreenshot).setOnClickListener(this);
         findViewById(R.id.prefs).setOnClickListener(this);
@@ -237,8 +236,8 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
         } else if (state == StateBase.PAGE_OPTIONS) {
             if (controlBar.isShown())
                 this.controlBar.hide(useAnimations);
-            starToggle.setChecked(history.isStarred(this.browser.getUrl()));
-            jsToggle.setChecked(this.browser.getSettings().getJavaScriptEnabled());
+            optionsStarToggle.setChecked(history.isStarred(this.browser.getUrl()));
+            optionsJsToggle.setChecked(this.browser.getSettings().getJavaScriptEnabled());
             showOptionsPane();
         }
     }
