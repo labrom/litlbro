@@ -12,9 +12,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import labrom.litlbro.L;
 import labrom.litlbro.R;
@@ -44,9 +42,8 @@ public class ControlBar extends RelativeLayout implements OnCheckedChangeListene
      */
     private static int CONTROL_BAR_PROGRESS_POLL_INTERVAL = 1000;
     
-    private TextView title;
     private ViewGroup controlPad;
-    private ProgressBar progress;
+    private PageLoadingView pageLoadingView;
     private CompoundButton jsToggle;
     private PageLoadController pageLoadController;
     private Animation pushPad;
@@ -76,7 +73,7 @@ public class ControlBar extends RelativeLayout implements OnCheckedChangeListene
         
         @Override
         public void run() {
-            if(progress.getProgress() >= HIDE_ON_PROGRESS)
+            if(pageLoadingView.getProgress() >= HIDE_ON_PROGRESS)
                 hide(this.useAnimation);
             else
                 handler.postDelayed(this, CONTROL_BAR_PROGRESS_POLL_INTERVAL);
@@ -101,9 +98,8 @@ public class ControlBar extends RelativeLayout implements OnCheckedChangeListene
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        title = (TextView)findViewById(R.id.title);
         controlPad = (ViewGroup)findViewById(R.id.controlPad);
-        progress = (ProgressBar)findViewById(R.id.progress);
+        pageLoadingView = (PageLoadingView)findViewById(R.id.pageTitleProgressLabel);
         jsToggle = (CompoundButton)this.controlPad.findViewById(R.id.jsToggle);
         jsToggle.setOnCheckedChangeListener(this);
         
@@ -202,12 +198,12 @@ public class ControlBar extends RelativeLayout implements OnCheckedChangeListene
 
     @Override
     public void setTitle(String title) {
-        this.title.setText(title == null ? "" : title);
+        this.pageLoadingView.setText(title);
     }
 
     @Override
     public void setProgress(int progress) {
-        this.progress.setProgress(progress);
+        this.pageLoadingView.setProgress(progress);
     }
     
     @Override
