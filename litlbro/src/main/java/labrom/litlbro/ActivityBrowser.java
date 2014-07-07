@@ -148,7 +148,7 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
         });
 
 
-        configureBrowser();
+        BrowserSettings.configure(this.browser.getSettings());
 
         WebIconDatabase.getInstance().open(getCacheDir().getAbsolutePath());
         this.iconCache = new IconCache(getCacheDir());
@@ -204,14 +204,6 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
                 browser.destroy();
             }
         }, ViewConfiguration.getZoomControlsTimeout());
-    }
-
-
-    private void configureBrowser() {
-        WebSettings settings = this.browser.getSettings();
-        settings.setJavaScriptEnabled(false); // Javascript disabled by default
-
-        BrowserSettings.configure(settings);
     }
 
 
