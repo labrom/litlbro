@@ -16,10 +16,6 @@
 	        android:background="@drawable/option_share"
 	        android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/share" />
 
-        <ToggleButton android:id="@+id/optionsJsToggle" android:textOn="TURN JAVASCRIPT OFF" android:textOff="TURN JAVASCRIPT ON" style="@style/optionsPaneItem"
-            android:background="@drawable/option_js_toggle"
-            android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/shareScreenshot" />
-        
         <Button android:id="@+id/prefs" android:text="@string/optionPreferences" style="@style/optionsPaneItem"
             android:background="@drawable/option_preferences"
             android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true" />

@@ -6,7 +6,7 @@ public class PageOptionsState extends StateBase {
     public State change(Event e) {
         if(e == Event.TAP_HW_MENU || e == Event.BACK)
             return goTo(PAGE_LOADED, e);
-        if(e == Event.TAP_JS_TOGGLE)
+        if(e == Event.RELOAD)
             return goTo(PAGE_LOADING, e);
         return this;
     }

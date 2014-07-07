@@ -9,24 +9,4 @@
         android:id="@+id/pageTitleProgressLabel"
         android:layout_centerInParent="true" />
 
-    <RelativeLayout
-        android:id="@+id/controlPad"
-        style="@style/controlBarPad"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true">
-
-        <ToggleButton
-            android:id="@+id/jsToggle"
-            style="controlBarJsToggle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/js_toggle"
-            android:checked="false"
-            android:textOff=""
-            android:textOn="" />
-
-    </RelativeLayout>
-
 </labrom.litlbro.widget.ControlBar>

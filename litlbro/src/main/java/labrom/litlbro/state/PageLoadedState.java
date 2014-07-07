@@ -9,7 +9,7 @@ class PageLoadedState extends StateBase {
             return goTo(PAGE_OPTIONS, e);
         case TAP_LINK:
             return goTo(PAGE_LOADING, e);
-        case TAP_JS_TOGGLE:
+        case RELOAD:
             return goTo(PAGE_LOADING, e);
         case BACK:
             return null;

@@ -6,7 +6,7 @@ public interface PageLoadController {
     /**
      * Can be invoked many times consecutively.
      */
-    void restart(boolean enableJavascript);
+    void restart();
     
     boolean isRestarting();
 

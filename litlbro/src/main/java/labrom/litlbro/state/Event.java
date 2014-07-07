@@ -10,7 +10,7 @@ public enum Event {
     SEARCH_BOX_TEXT,
     SEARCH_BOX_EMPTY,
     SEARCH_BOX_DONE,
-    TAP_JS_TOGGLE,
+    RELOAD,
     TAP_HW_MENU,
     PAGE_FINISHED_LOADING,
     TAP_LINK

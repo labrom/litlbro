@@ -8,7 +8,6 @@ import android.webkit.WebViewClient;
 
 import labrom.litlbro.R;
 import labrom.litlbro.data.HistoryManager;
-import labrom.litlbro.data.SitePreferencesManager;
 import labrom.litlbro.widget.ControlBar;
 
 public final class BrowserClient extends WebViewClient {
@@ -23,7 +22,6 @@ public final class BrowserClient extends WebViewClient {
     }
     
     final ControlBar controlBar;
-    final SitePreferencesManager prefs;
     final HistoryManager history;
     private String lastStartedUrl;
     private NavFlags lastNavFlags;
@@ -37,9 +35,8 @@ public final class BrowserClient extends WebViewClient {
     private static final String[] EXCLUDED_EXTENSIONS = {".pdf"};
 
     
-    public BrowserClient(ControlBar controlBar, SitePreferencesManager prefs, HistoryManager history, IntentHandler intentHandler) {
+    public BrowserClient(ControlBar controlBar, HistoryManager history, IntentHandler intentHandler) {
         this.controlBar = controlBar;
-        this.prefs = prefs;
         this.history = history;
         this.intentHandler = intentHandler;
     }
@@ -96,30 +93,7 @@ public final class BrowserClient extends WebViewClient {
         this.lastStartedUrl = url;
         this.lastNavFlags = flags;
 
-        boolean forceJs = flags != null && flags.forceJs;
-        boolean forceNoJs = flags != null && flags.forceNoJs;
 //        boolean explicitNav = flags != null && flags.explicitNav;
-
-        PageLoadController loadCtrl = this.controlBar.getPageLoadController();
-        if(loadCtrl != null) {
-            if(forceJs) {
-                controlBar.setJavascriptEnabled(true);
-            } else if(forceNoJs) {
-                controlBar.setJavascriptEnabled(false);
-            } else /*if(!explicitNav)*/ {
-                controlBar.disableJavascriptToggle();
-                this.prefs.askWhetherJavascriptEnabled(url, new SitePreferencesManager.Delegate() {
-        
-                    @Override
-                    public void notifyJavascriptEnabled(boolean enabled) {
-                        if(view.getSettings().getJavaScriptEnabled() != enabled)
-                            view.getSettings().setJavaScriptEnabled(enabled);
-                        controlBar.setJavascriptEnabled(enabled);
-                    }
-                    
-                });
-            }
-        }
     }
 
     @Override
@@ -129,8 +103,6 @@ public final class BrowserClient extends WebViewClient {
         if(listener != null)
             listener.onPageFinished();
         
-        this.prefs.recordPagePref(url, view.getSettings().getJavaScriptEnabled());
-
         NavFlags flags = (NavFlags)view.getTag(R.id.tag_nav_flags);
         boolean noHistory = flags != null && flags.noHistory;
         boolean back = flags != null && flags.isBack;

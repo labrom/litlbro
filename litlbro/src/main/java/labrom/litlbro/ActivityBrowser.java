@@ -23,7 +23,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ProgressBar;
 
 import labrom.litlbro.browser.BrowserClient;
 import labrom.litlbro.browser.BrowserSettings;
@@ -33,7 +32,6 @@ import labrom.litlbro.browser.NavFlags;
 import labrom.litlbro.browser.PageLoadController;
 import labrom.litlbro.browser.ShareScreenshotTask;
 import labrom.litlbro.data.DBHistoryManager;
-import labrom.litlbro.data.DBSitePreferencesManager;
 import labrom.litlbro.data.Database;
 import labrom.litlbro.data.HistoryManager;
 import labrom.litlbro.icon.IconCache;
@@ -95,14 +93,11 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
     ControlBar controlBar;
     View optionsPane;
     CompoundButton optionsStarToggle;
-    CompoundButton optionsJsToggle;
     BrowserClient viewClient;
-    ProgressBar progress;
     private Animation pushOptions;
     private Animation pullOptions;
 
     Database db;
-    DBSitePreferencesManager sitePrefs;
     HistoryManager history;
     IconCache iconCache;
 
@@ -127,7 +122,6 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
         this.optionsPane = findViewById(R.id.optionsPane);
         this.optionsStarToggle = (CompoundButton) this.optionsPane.findViewById(R.id.star);
         this.optionsStarToggle.setOnCheckedChangeListener(this);
-        this.optionsJsToggle = (CompoundButton) this.optionsPane.findViewById(R.id.optionsJsToggle);
         findViewById(R.id.share).setOnClickListener(this);
         findViewById(R.id.shareScreenshot).setOnClickListener(this);
         findViewById(R.id.prefs).setOnClickListener(this);
@@ -170,9 +164,8 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
 
         // Initialize DB-based services
         this.db = Database.create(getApplicationContext());
-        this.sitePrefs = new DBSitePreferencesManager(this.db);
         this.history = new DBHistoryManager(this.db);
-        this.viewClient = new BrowserClient(this.controlBar, this.sitePrefs, this.history, this);
+        this.viewClient = new BrowserClient(this.controlBar, this.history, this);
         this.viewClient.setListener(this);
         this.browser.setWebViewClient(viewClient);
 
@@ -237,7 +230,6 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
             if (controlBar.isShown())
                 this.controlBar.hide(useAnimations);
             optionsStarToggle.setChecked(history.isStarred(this.browser.getUrl()));
-            optionsJsToggle.setChecked(this.browser.getSettings().getJavaScriptEnabled());
             showOptionsPane();
         }
     }
@@ -259,21 +251,11 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
         }
     }
 
-    void navigate(String url, boolean forceJs, boolean forceNoJs, boolean noHistory) {
+    void navigate(String url, boolean noHistory) {
         NavFlags flags = new NavFlags();
-        flags.forceJs = forceJs;
-        flags.forceNoJs = forceNoJs;
         flags.noHistory = noHistory;
         flags.explicitNav = true;
         this.browser.setTag(R.id.tag_nav_flags, flags);
-//        if(!forceJs && !forceNoJs) {
-//            this.sitePrefs.askWhetherJavascriptEnabled(url, new Delegate() {
-//               @Override
-//                public void notifyJavascriptEnabled(boolean enabled) {
-//                   browser.getSettings().setJavaScriptEnabled(enabled);
-//                } 
-//            });
-//        }
         this.browser.loadUrl(url);
     }
 
@@ -284,17 +266,10 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
             browser.clearHistory();
             String url = intent.getDataString();
             if (url != null) {
-
-                boolean forceJs = isSearchNavigateIntent(intent);
-                boolean noHistory = forceJs;
-                if (forceJs) {
-                    browser.getSettings().setJavaScriptEnabled(true);
-                }
-
+                boolean noHistory = isSearchNavigateIntent(intent);
                 changeState(Event.IMPLICIT_NEXT);
                 setUI();
-                navigate(url, forceJs, false, noHistory);
-                return;
+                navigate(url, noHistory);
             }
         }
     }
@@ -307,19 +282,18 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
     }
 
     @Override
-    public void restart(boolean enableJavascript) {
-        changeState(Event.TAP_JS_TOGGLE);
+    public void restart() {
+        changeState(Event.RELOAD);
         setUI();
 
         String url = this.browser.getUrl();
         this.browser.stopLoading();
-        this.browser.getSettings().setJavaScriptEnabled(enableJavascript);
-        navigate(url, enableJavascript, !enableJavascript, true); // Should already be in history right?
+        navigate(url, true); // Should already be in history right?
     }
 
     @Override
     public boolean isRestarting() {
-        return state != null && state.getLastEvent() == Event.TAP_JS_TOGGLE;
+        return state != null && state.getLastEvent() == Event.RELOAD;
     }
 
 
@@ -408,9 +382,6 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
             case R.id.star:
                 toggleStarred(checked);
                 return;
-            case R.id.optionsJsToggle:
-                restart(checked);
-                this.controlBar.setJavascriptEnabled(checked);
         }
     }
 
