@@ -14,6 +14,7 @@ public class PageLoadingView extends TextView {
 
     private ProgressLabelDrawable progressLabelDrawable;
     private int originalPaddingLeft, originalPaddingRight;
+    private int lastProgress;
 
     public PageLoadingView(Context context) {
         super(context);
@@ -42,6 +43,9 @@ public class PageLoadingView extends TextView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (getText() == null || getText().length() == 0) {
+            setMeasuredDimension(getMeasuredHeight(), getMeasuredHeight());
+        }
         progressLabelDrawable.setBounds(0, 0, getMeasuredWidth(), getMeasuredHeight());
         progressLabelDrawable.setProgressPadding(getResources().getDimensionPixelSize(R.dimen.progressDrawablePadding));
         int newPaddingLeft = originalPaddingLeft + getMeasuredHeight() / 2;
@@ -53,10 +57,11 @@ public class PageLoadingView extends TextView {
     }
 
     public void setProgress(int progress) {
-        progressLabelDrawable.setLevel(progress * 100);
+        this.lastProgress = progress;
+        progressLabelDrawable.setLevel(this.lastProgress * 100);
     }
 
     public int getProgress() {
-        return progressLabelDrawable.getLevel();
+        return lastProgress;
     }
 }
