@@ -19,11 +19,11 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.webkit.WebIconDatabase;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
+import labrom.litlbro.browser.BroWebView;
 import labrom.litlbro.browser.BrowserClient;
 import labrom.litlbro.browser.BrowserSettings;
 import labrom.litlbro.browser.ChromeClient;
@@ -113,7 +113,7 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.chrome);
+        setContentView(R.layout.activity_browser);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         shaker = new ShakeManager(this, this);
         shakeDialog = new ShakeDialog(this, prefs, this);
@@ -338,6 +338,7 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
                 flags.isBack = true;
                 this.browser.setTag(R.id.tag_nav_flags, flags);
                 this.browser.goBack();
+                this.browser.showSystemUi();
                 setUI();
             } else /*if(gotViewIntent())*/ {
                 super.onBackPressed();

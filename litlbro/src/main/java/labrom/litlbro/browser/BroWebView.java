@@ -1,4 +1,4 @@
-package labrom.litlbro;
+package labrom.litlbro.browser;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -10,6 +10,8 @@ import android.webkit.WebView;
  * Created by labrom on 3/6/14.
  */
 public final class BroWebView extends WebView {
+
+    public static final int HIDE_DELAY = 4000;
 
     /**
      * A callback interface used to listen for system UI visibility changes.
@@ -75,12 +77,46 @@ public final class BroWebView extends WebView {
         super(context, attrs, defStyle);
     }
 
+    @Override
+    public void onWindowSystemUiVisibilityChanged(int visibility) {
+        if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) != 0) { // Hidden
+            systemUiVisible = false;
+            onSystemUiVisibilityChangeListener.onVisibilityChange(false);
+        }
+        else { // Shown
+            systemUiVisible = true;
+            if (shouldHideSystemUi) delayedHideSystemUi(HIDE_DELAY); // Automatically hide the system UI after a few seconds
+            onSystemUiVisibilityChangeListener.onVisibilityChange(true);
+        }
+        super.onWindowSystemUiVisibilityChanged(visibility);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if(event.getAction() == MotionEvent.ACTION_UP) {
+            if (!systemUiVisible) showSystemUi();
+        }
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+        super.onScrollChanged(l, t, oldl, oldt);
+        showSystemUi();
+    }
+
+    @Override
+    protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY) {
+        super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
+        showSystemUi();
+    }
 
     /**
      * Hide the system UI.
      */
     public void hideSystemUi() {
-        if (!shouldHideSystemUi) return;
+        removeCallbacks(hideRunnable);
+        if (!shouldHideSystemUi || !systemUiVisible) return;
         setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
     }
 
@@ -89,7 +125,11 @@ public final class BroWebView extends WebView {
      */
     public void showSystemUi() {
         if (!shouldHideSystemUi) return;
-        setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        if (systemUiVisible) {
+            delayedHideSystemUi(HIDE_DELAY);
+        } else {
+            setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        }
     }
 
     /**
@@ -123,38 +163,9 @@ public final class BroWebView extends WebView {
         onSystemUiVisibilityChangeListener = listener;
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        removeCallbacks(showRunnable);
-        if(event.getAction() == MotionEvent.ACTION_UP) {
-            postDelayed(showRunnable, 200);
-        }
-        return super.onTouchEvent(event);
-    }
-
-    @Override
-    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-        removeCallbacks(showRunnable);
-        super.onScrollChanged(l, t, oldl, oldt);
-        hideSystemUi();
-    }
-
-    public void delayedHideSystemUi(int delayMillis) {
+    private void delayedHideSystemUi(int delayMillis) {
         removeCallbacks(hideRunnable);
         postDelayed(hideRunnable, delayMillis);
     }
 
-    @Override
-    public void onWindowSystemUiVisibilityChanged(int visibility) {
-        if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) != 0) { // Hidden
-            systemUiVisible = false;
-            onSystemUiVisibilityChangeListener.onVisibilityChange(false);
-        }
-        else { // Shown
-            systemUiVisible = true;
-            if (shouldHideSystemUi) delayedHideSystemUi(3000); // Automatically hide the system UI after a few seconds
-            onSystemUiVisibilityChangeListener.onVisibilityChange(true);
-        }
-        super.onWindowSystemUiVisibilityChanged(visibility);
-    }
 }
