@@ -36,7 +36,7 @@
 
 
 
-
+    <dimen name="progressDrawablePadding">2dp</dimen>
 
     <style name="controlBar">
     </style>

@@ -5,6 +5,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import labrom.litlbro.R;
+
 /**
  * @author Romain Laboisse labrom@gmail.com
  */
@@ -41,6 +43,7 @@ public class PageLoadingView extends TextView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         progressLabelDrawable.setBounds(0, 0, getMeasuredWidth(), getMeasuredHeight());
+        progressLabelDrawable.setProgressPadding(getResources().getDimensionPixelSize(R.dimen.progressDrawablePadding));
         int newPaddingLeft = originalPaddingLeft + getMeasuredHeight() / 2;
         int newPaddingRight = originalPaddingRight + getMeasuredHeight();
         if (newPaddingLeft != getPaddingLeft() || newPaddingRight != getPaddingRight()) {

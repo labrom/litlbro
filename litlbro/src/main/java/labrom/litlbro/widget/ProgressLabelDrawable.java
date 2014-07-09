@@ -16,6 +16,7 @@ public class ProgressLabelDrawable extends Drawable {
 
     private Paint backgroundPaint;
     private Paint progressPaint;
+    private int progressPadding;
 
     private void initBackgroundPaint() {
         if (backgroundPaint == null) {
@@ -39,6 +40,10 @@ public class ProgressLabelDrawable extends Drawable {
     public void setProgressColor(int color) {
         initProgressPaint();
         progressPaint.setColor(color);
+    }
+
+    public void setProgressPadding(int progressPadding) {
+        this.progressPadding = progressPadding;
     }
 
     @Override
@@ -75,8 +80,8 @@ public class ProgressLabelDrawable extends Drawable {
         int progressCenterX = bounds.width() - bounds.centerY();
         int progressCenterY = bounds.centerY();
         path.moveTo(progressCenterX, progressCenterY);
-        path.lineTo(progressCenterX, 0);
-        path.addArc(new RectF(progressCenterX - bounds.centerY(), 0, bounds.width(), bounds.height()), 0, sweepAngle);
+        path.lineTo(progressCenterX, progressPadding);
+        path.addArc(new RectF(progressCenterX - bounds.centerY() + progressPadding, progressPadding, bounds.width() - progressPadding, bounds.height() - progressPadding), 0, sweepAngle);
         path.lineTo(progressCenterX, progressCenterY);
         canvas.drawPath(path, progressPaint);
     }
