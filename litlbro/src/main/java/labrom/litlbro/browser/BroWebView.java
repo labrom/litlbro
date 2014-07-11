@@ -83,20 +83,6 @@ public final class BroWebView extends WebView {
     }
 
     @Override
-    public void onWindowSystemUiVisibilityChanged(int visibility) {
-        if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) != 0) { // Hidden
-            systemUiVisible = false;
-            onSystemUiVisibilityChangeListener.onVisibilityChange(false);
-        }
-        else { // Shown
-            systemUiVisible = true;
-            if (shouldHideSystemUi && shouldAutoHideSystemUi) delayedHideSystemUi(HIDE_DELAY); // Automatically hide the system UI after a few seconds
-            onSystemUiVisibilityChangeListener.onVisibilityChange(true);
-        }
-        super.onWindowSystemUiVisibilityChanged(visibility);
-    }
-
-    @Override
     public boolean onTouchEvent(MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_UP) {
             if (!systemUiVisible) showSystemUi();
@@ -137,13 +123,31 @@ public final class BroWebView extends WebView {
      * @param autoHide Whether or not the system UI should be automatically hidden after some time.
      */
     public void showSystemUi(boolean autoHide) {
-        shouldAutoHideSystemUi = autoHide;
+        shouldAutoHideSystemUi = autoHide; // This will be used in #onWindowSystemUiVisibilityChanged
         if (!shouldHideSystemUi) return;
-        if (systemUiVisible && autoHide) {
-            delayedHideSystemUi(HIDE_DELAY);
-        } else if (!systemUiVisible) {
+        if (systemUiVisible) { // Already shown, either reschedule or cancel auto-hide
+            if (autoHide) {
+                delayedHideSystemUi(HIDE_DELAY);
+            } else {
+                removeCallbacks(hideRunnable);
+            }
+        } else { // System UI not shown, request visible, see #onWindowSystemUiVisibilityChanged
             setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         }
+    }
+
+    @Override
+    public void onWindowSystemUiVisibilityChanged(int visibility) {
+        if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) != 0) { // Hidden
+            systemUiVisible = false;
+            onSystemUiVisibilityChangeListener.onVisibilityChange(false);
+        }
+        else { // Shown
+            systemUiVisible = true;
+            if (shouldHideSystemUi && shouldAutoHideSystemUi) delayedHideSystemUi(HIDE_DELAY); // Automatically hide the system UI after a few seconds
+            onSystemUiVisibilityChangeListener.onVisibilityChange(true);
+        }
+        super.onWindowSystemUiVisibilityChanged(visibility);
     }
 
     /**
