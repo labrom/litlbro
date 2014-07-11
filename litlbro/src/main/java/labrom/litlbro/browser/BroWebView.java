@@ -54,6 +54,11 @@ public final class BroWebView extends WebView {
     private boolean shouldHideSystemUi = true;
 
     /**
+     * Whether or not the system UI should be automatically hidden after some time.
+     */
+    private boolean shouldAutoHideSystemUi = true;
+
+    /**
      * The current system UI visibility callback.
      */
     private OnSystemUiVisibilityChangeListener onSystemUiVisibilityChangeListener = DUMMY_LISTENER;
@@ -85,7 +90,7 @@ public final class BroWebView extends WebView {
         }
         else { // Shown
             systemUiVisible = true;
-            if (shouldHideSystemUi) delayedHideSystemUi(HIDE_DELAY); // Automatically hide the system UI after a few seconds
+            if (shouldHideSystemUi && shouldAutoHideSystemUi) delayedHideSystemUi(HIDE_DELAY); // Automatically hide the system UI after a few seconds
             onSystemUiVisibilityChangeListener.onVisibilityChange(true);
         }
         super.onWindowSystemUiVisibilityChanged(visibility);
@@ -121,13 +126,22 @@ public final class BroWebView extends WebView {
     }
 
     /**
-     * Show the system UI.
+     * Show the system UI. It will automatically be hidden after some time.
      */
     public void showSystemUi() {
+        showSystemUi(true);
+    }
+
+    /**
+     * Show the system UI.
+     * @param autoHide Whether or not the system UI should be automatically hidden after some time.
+     */
+    public void showSystemUi(boolean autoHide) {
+        shouldAutoHideSystemUi = autoHide;
         if (!shouldHideSystemUi) return;
-        if (systemUiVisible) {
+        if (systemUiVisible && autoHide) {
             delayedHideSystemUi(HIDE_DELAY);
-        } else {
+        } else if (!systemUiVisible) {
             setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         }
     }

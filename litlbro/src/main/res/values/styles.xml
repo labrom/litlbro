@@ -54,8 +54,10 @@
         <item name="android:alpha">0.7</item>
     </style>
 
-    <style name="optionsPane">
+    <style name="optionsPaneBackground">
         <item name="android:background">@color/optionsPaneBg</item>
+    </style>
+    <style name="optionsPane">
         <item name="android:padding">6dp</item>
     </style>
     <style name="optionsPaneItem">

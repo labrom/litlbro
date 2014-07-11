@@ -230,6 +230,7 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
 
     private void showOptionsPane() {
         if (!optionsPane.isShown()) {
+            browser.showSystemUi(false);
             if (ActivityPrefs.useWindowAnimations(prefs, getResources())) {
                 optionsPane.startAnimation(pullOptions);
             }
