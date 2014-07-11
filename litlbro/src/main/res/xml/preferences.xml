@@ -7,7 +7,14 @@
         android:summaryOn="@string/prefUseAnimationsOnSummary"
         android:summaryOff="@string/prefUseAnimationsOffSummary"
         android:defaultValue="@bool/prefUseAnimationsDefault" />
-    
+
+    <CheckBoxPreference
+        android:key="hideSystemUI"
+        android:title="@string/prefHideSystemUITitle"
+        android:summaryOn="@string/prefHideSystemUIOnSummary"
+        android:summaryOff="@string/prefHideSystemUIOffSummary"
+        android:defaultValue="@bool/prefHideSystemUIDefault" />
+
     <ListPreference
         android:key="nbPages"
         android:title="@string/prefNbPagesTitle"

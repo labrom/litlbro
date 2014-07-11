@@ -17,6 +17,9 @@
     <string name="prefUseAnimationsTitle">Screen animations</string>
     <string name="prefUseAnimationsOnSummary">All animations are enabled</string>
     <string name="prefUseAnimationsOffSummary">Some animations are disabled</string>
+    <string name="prefHideSystemUITitle">Hide system bars in browser</string>
+    <string name="prefHideSystemUIOnSummary">System bars are hidden</string>
+    <string name="prefHideSystemUIOffSummary">System bars stay</string>
     <string name="prefNbPagesTitle">Shortcut pages</string>
     <string name="prefNbPagesSummary">Number of shortcut pages</string>
     <string name="prefNbPagesDialogTitle">Number of pages</string>

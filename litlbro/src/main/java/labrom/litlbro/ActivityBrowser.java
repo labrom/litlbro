@@ -47,7 +47,7 @@ import labrom.litlbro.widget.ShakeDialog;
 /**
  * @author Romain Laboisse labrom@gmail.com
  */
-public class ActivityBrowser extends Activity implements BrowserClient.Listener, PageLoadController, OnClickListener, OnCheckedChangeListener, BrowserClient.IntentHandler, ShakeListener, ShakeDialog.Listener {
+public class ActivityBrowser extends Activity implements BrowserClient.Listener, PageLoadController, OnClickListener, OnCheckedChangeListener, BrowserClient.IntentHandler, ShakeListener, ShakeDialog.Listener, View.OnLongClickListener {
 
 
     private static final int SHAKE_MIN_ACCEL = 3;
@@ -119,6 +119,8 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
         shakeDialog = new ShakeDialog(this, prefs, this);
 
         this.browser = (BroWebView) findViewById(R.id.web);
+        this.browser.setOnLongClickListener(this);
+        this.browser.setShouldHideSystemUi(prefs.getBoolean("hideSystemUI", getResources().getBoolean(R.bool.prefHideSystemUIDefault)));
         this.optionsPane = findViewById(R.id.optionsPane);
         this.optionsStarToggle = (CompoundButton) this.optionsPane.findViewById(R.id.star);
         this.optionsStarToggle.setOnCheckedChangeListener(this);
@@ -367,6 +369,15 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
                 ActivityPrefs.startBy(this);
                 return;
         }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        if (v.getId() == R.id.web) {
+            changeState(Event.TAP_HW_MENU);
+            setUI();
+        }
+        return false;
     }
 
     @Override
