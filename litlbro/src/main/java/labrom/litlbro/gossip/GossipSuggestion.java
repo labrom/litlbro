@@ -23,8 +23,10 @@ public class GossipSuggestion implements Suggestion, Comparable<GossipSuggestion
     public GossipSuggestion(JSONArray data, List<String> fields, String query) throws JSONException {
         int index = 0;
         this.query = query;
-        for(String field : fields)
-            this.data.put(field, data.getString(index ++));
+        for(String field : fields) {
+            if (index >= data.length()) break;
+            this.data.put(field, data.getString(index++));
+        }
     }
     
     @Override
