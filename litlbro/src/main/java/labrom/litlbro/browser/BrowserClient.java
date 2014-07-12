@@ -120,6 +120,5 @@ public final class BrowserClient extends WebViewClient {
         super.onReceivedError(view, errorCode, description, failingUrl);
         view.setTag(R.id.tag_nav_flags, null);
     }
-    
 
 }

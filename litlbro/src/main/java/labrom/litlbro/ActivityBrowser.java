@@ -15,19 +15,19 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.webkit.WebChromeClient;
 import android.webkit.WebIconDatabase;
-import android.webkit.WebView;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import labrom.litlbro.browser.BroWebView;
 import labrom.litlbro.browser.BrowserClient;
 import labrom.litlbro.browser.BrowserSettings;
-import labrom.litlbro.browser.ChromeClient;
-import labrom.litlbro.browser.ChromeClient.PagePublisher;
+import labrom.litlbro.browser.DelegatingChromeClient;
 import labrom.litlbro.browser.NavFlags;
 import labrom.litlbro.browser.PageLoadController;
 import labrom.litlbro.browser.ShareScreenshotTask;
@@ -47,78 +47,44 @@ import labrom.litlbro.widget.ShakeDialog;
 /**
  * @author Romain Laboisse labrom@gmail.com
  */
-public class ActivityBrowser extends Activity implements BrowserClient.Listener, PageLoadController, OnClickListener, OnCheckedChangeListener, BrowserClient.IntentHandler, ShakeListener, ShakeDialog.Listener, View.OnLongClickListener {
+public class ActivityBrowser extends Activity implements
+        BrowserClient.Listener, PageLoadController, OnClickListener,
+        OnCheckedChangeListener, BrowserClient.IntentHandler, ShakeListener,
+        ShakeDialog.Listener, View.OnLongClickListener, DelegatingChromeClient.Delegate {
 
 
     private static final int SHAKE_MIN_ACCEL = 3;
 
-    private final class PagePublisherWrapper implements PagePublisher {
-
-        private PagePublisher wrapped;
-        private IconCache iconCache;
-        private String currentUrl;
-
-        public PagePublisherWrapper(PagePublisher wrapped, IconCache iconCache) {
-            this.wrapped = wrapped;
-            this.iconCache = iconCache;
-        }
-
-        public void setCurrentUrl(String url) {
-            this.currentUrl = url;
-        }
-
-        @Override
-        public void setProgress(int progress) {
-            wrapped.setProgress(progress);
-        }
-
-        @Override
-        public void setTitle(String title) {
-            wrapped.setTitle(title);
-        }
-
-        @Override
-        public void setIcon(Bitmap icon) {
-            wrapped.setIcon(icon);
-            if (this.currentUrl != null) {
-                String host = UrlUtil.getHost(currentUrl);
-                this.iconCache.cache(icon, host);
-            }
-        }
-    }
-
     public static final int DIALOG_PROGRESS_SHARE_SCREENSHOT = 1;
 
-    BroWebView browser;
-    ControlBar controlBar;
-    View optionsPane;
-    CompoundButton optionsStarToggle;
-    BrowserClient viewClient;
-    private Animation pushOptions;
-    private Animation pullOptions;
-
-    Database db;
-    HistoryManager history;
-    IconCache iconCache;
-
+    private BroWebView browser;
+    private ControlBar controlBar;
+    private View optionsPane;
+    private CompoundButton optionsStarToggle;
+    private BrowserClient viewClient;
+    private Database db;
+    private HistoryManager history;
     private State state;
     private SharedPreferences prefs;
     private ShakeManager shaker;
     private ShakeDialog shakeDialog;
     private AlertDialog currentlyShowingShakeDialog;
-
-
-    private PagePublisherWrapper pagePublisher;
+    private ViewGroup fullScreenVideoContainer;
+    private WebChromeClient.CustomViewCallback fullScreenVideoCallback;
+    private Animation pushOptions;
+    private Animation pullOptions;
+    private IconCache iconCache;
+    private String currentUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browser);
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        shaker = new ShakeManager(this, this);
-        shakeDialog = new ShakeDialog(this, prefs, this);
-
+        this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        this.shaker = new ShakeManager(this, this);
+        this.shakeDialog = new ShakeDialog(this, prefs, this);
         this.browser = (BroWebView) findViewById(R.id.web);
+        this.fullScreenVideoContainer = (ViewGroup) findViewById(R.id.video);
         this.browser.setOnLongClickListener(this);
         this.browser.setShouldHideSystemUi(prefs.getBoolean("hideSystemUI", getResources().getBoolean(R.bool.prefHideSystemUIDefault)));
         this.optionsPane = findViewById(R.id.optionsPane);
@@ -131,9 +97,9 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
         this.controlBar.setPageLoadController(this);
 
         // Control pad animations
-        pullOptions = AnimationUtils.loadAnimation(this, R.anim.pull_options_pane);
-        pushOptions = AnimationUtils.loadAnimation(this, R.anim.push_options_pane);
-        pushOptions.setAnimationListener(new AnimationListener() {
+        this.pullOptions = AnimationUtils.loadAnimation(this, R.anim.pull_options_pane);
+        this.pushOptions = AnimationUtils.loadAnimation(this, R.anim.push_options_pane);
+        this.pushOptions.setAnimationListener(new AnimationListener() {
 
             @Override
             public void onAnimationStart(Animation animation) {
@@ -154,8 +120,7 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
 
         WebIconDatabase.getInstance().open(getCacheDir().getAbsolutePath());
         this.iconCache = new IconCache(getCacheDir());
-        this.pagePublisher = new PagePublisherWrapper(this.controlBar, this.iconCache);
-        this.browser.setWebChromeClient(new ChromeClient(pagePublisher));
+        this.browser.setWebChromeClient(new DelegatingChromeClient(this));
 
         this.state = StateBase.NAVIGATE_INTENT;
     }
@@ -171,19 +136,32 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
         this.viewClient.setListener(this);
         this.browser.setWebViewClient(viewClient);
 
-        if (state == StateBase.NAVIGATE_INTENT) {
+        if (this.state == StateBase.NAVIGATE_INTENT) {
             navigate(getIntent());
-        } else if (state == StateBase.PAGE_OPTIONS) {
+        } else if (this.state == StateBase.PAGE_OPTIONS) {
             changeState(Event.BACK);
             setUI();
         }
-        shaker.register();
+        this.shaker.register();
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         navigate(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        browser.resume();
+    }
+
+    @Override
+    protected void onPause() {
+        hideFullScreenVideo(true);
+        browser.pause();
+        super.onPause();
     }
 
     @Override
@@ -200,12 +178,16 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
         super.onDestroy();
 
         // Workaround for crasher with zoom controls, see http://stackoverflow.com/questions/5267639/how-to-safely-turn-webview-zooming-on-and-off-as-needed
-        this.browser.postDelayed(new Runnable() {
+        browser.postDelayed(new Runnable() {
             @Override
             public void run() {
                 browser.destroy();
             }
         }, ViewConfiguration.getZoomControlsTimeout());
+    }
+
+    public BroWebView getWebView() {
+        return browser;
     }
 
 
@@ -300,7 +282,7 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
 
     @Override
     public void onPageStarted(String url) {
-        this.pagePublisher.setCurrentUrl(url);
+        this.currentUrl = url;
         /*
          * We had a page loaded, now a (supposedly new) page is loading,
          * so someone must have clicked on a link or something... 
@@ -310,7 +292,6 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
             setUI();
         }
     }
-
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
@@ -332,8 +313,9 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
 
     @Override
     public void onBackPressed() {
-        changeState(Event.BACK);
+        hideFullScreenVideo(true);
 
+        changeState(Event.BACK);
         if (state == null) {
             if (this.browser.canGoBack()) {
                 state = StateBase.PAGE_LOADING;
@@ -449,7 +431,58 @@ public class ActivityBrowser extends Activity implements BrowserClient.Listener,
         finish();
     }
 
-    public WebView getWebView() {
-        return browser;
+    @Override
+    public void onPageProgressChanged(int progress) {
+        this.controlBar.onPageProgressChanged(progress);
+    }
+
+    @Override
+    public void onReceivedTitle(String title) {
+        this.controlBar.onReceivedTitle(title);
+    }
+
+    @Override
+    public void onReceivedIcon(Bitmap icon) {
+        this.controlBar.onReceivedIcon(icon);
+        if (this.currentUrl != null) {
+            String host = UrlUtil.getHost(currentUrl);
+            this.iconCache.cache(icon, host);
+        }
+    }
+
+    @Override
+    public void onShowCustomView(View view, WebChromeClient.CustomViewCallback callback) {
+        this.controlBar.onShowCustomView(view, callback);
+        if (isShowingFullScreenVideo()) {
+            hideFullScreenVideo(false);
+        }
+        fullScreenVideoCallback = callback;
+        showFullScreenVideo(view);
+    }
+
+    @Override
+    public void onHideCustomView() {
+        this.controlBar.onHideCustomView();
+        hideFullScreenVideo(false);
+    }
+
+
+    private boolean isShowingFullScreenVideo() {
+        return fullScreenVideoContainer.getVisibility() == View.VISIBLE;
+    }
+
+    private void hideFullScreenVideo(boolean notify) {
+        if (notify && fullScreenVideoCallback != null) {
+            fullScreenVideoCallback.onCustomViewHidden();
+        }
+        fullScreenVideoCallback = null;
+        fullScreenVideoContainer.removeAllViews();
+        fullScreenVideoContainer.setVisibility(View.GONE);
+    }
+
+    private void showFullScreenVideo(View v) {
+        browser.hideSystemUi();
+        fullScreenVideoContainer.addView(v, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        fullScreenVideoContainer.setVisibility(View.VISIBLE);
     }
 }

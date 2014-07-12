@@ -2,6 +2,7 @@ package labrom.litlbro.browser;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
@@ -11,6 +12,7 @@ import android.webkit.WebView;
  */
 public final class BroWebView extends WebView {
 
+    private static boolean canPauseResumeTimers = true;
     public static final int HIDE_DELAY = 4000;
 
     /**
@@ -184,6 +186,30 @@ public final class BroWebView extends WebView {
     private void delayedHideSystemUi(int delayMillis) {
         removeCallbacks(hideRunnable);
         postDelayed(hideRunnable, delayMillis);
+    }
+
+    public void pause() {
+        onPause();
+        if (canPauseResumeTimers) {
+            try {
+                getClass().getMethod("onPauseTimers", (Class<?>[]) null).invoke(this);
+            } catch (Exception e) {
+                canPauseResumeTimers = false;
+                Log.w("WebView", "Cannot invoke onPauseTimers()");
+            }
+        }
+    }
+
+    public void resume() {
+        onResume();
+        if (canPauseResumeTimers) {
+            try {
+                getClass().getMethod("onResumeTimers", (Class<?>[]) null).invoke(this);
+            } catch (Exception e) {
+                canPauseResumeTimers = false;
+                Log.w("WebView", "Cannot invoke onResumeTimers()");
+            }
+        }
     }
 
 }

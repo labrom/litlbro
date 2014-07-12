@@ -11,6 +11,13 @@
         android:visibility="invisible"
         android:scrollbars="none" />
 
+    <FrameLayout
+        android:id="@+id/video"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@android:color/black" />
+
     <include
         android:id="@+id/controlBar"
         layout="@layout/control_bar" />

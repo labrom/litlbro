@@ -5,17 +5,14 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationUtils;
+import android.webkit.WebChromeClient;
 import android.widget.RelativeLayout;
 
 import labrom.litlbro.R;
-import labrom.litlbro.browser.ChromeClient.PagePublisher;
+import labrom.litlbro.browser.DelegatingChromeClient;
 import labrom.litlbro.browser.PageLoadController;
 
-public class ControlBar extends RelativeLayout implements PagePublisher {
+public class ControlBar extends RelativeLayout implements DelegatingChromeClient.Delegate {
     
     /**
      * Control pads will always show at least this long.
@@ -47,7 +44,7 @@ public class ControlBar extends RelativeLayout implements PagePublisher {
         @Override
         public void run() {
             setVisibility(View.INVISIBLE);
-            setTitle(null);
+            onReceivedTitle(null);
         }
     };
     private class RunTimedHide implements Runnable {
@@ -99,7 +96,7 @@ public class ControlBar extends RelativeLayout implements PagePublisher {
         
         setVisibility(View.VISIBLE);
         lastControlPadShowTime = System.currentTimeMillis();
-        setTitle(null);
+        onReceivedTitle(null);
 
         runTimedHide = new RunTimedHide(useAnimation);
         handler.postDelayed(runTimedHide, CONTROL_BAR_SHOW_TIME);
@@ -121,18 +118,27 @@ public class ControlBar extends RelativeLayout implements PagePublisher {
     }
 
     @Override
-    public void setTitle(String title) {
+    public void onReceivedTitle(String title) {
         this.pageLoadingView.setText(title);
     }
 
     @Override
-    public void setProgress(int progress) {
+    public void onPageProgressChanged(int progress) {
         this.pageLoadingView.setProgress(progress);
     }
     
     @Override
-    public void setIcon(Bitmap icon) {
+    public void onReceivedIcon(Bitmap icon) {
         // Does nothing
     }
-    
+
+    @Override
+    public void onHideCustomView() {
+        // Does nothing
+    }
+
+    @Override
+    public void onShowCustomView(View view, WebChromeClient.CustomViewCallback callback) {
+        // Does nothing
+    }
 }
