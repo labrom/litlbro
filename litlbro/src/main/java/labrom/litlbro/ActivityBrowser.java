@@ -14,8 +14,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
@@ -83,16 +83,22 @@ public class ActivityBrowser extends Activity implements
         this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
         this.shaker = new ShakeManager(this, this);
         this.shakeDialog = new ShakeDialog(this, prefs, this);
-        this.browser = (BroWebView) findViewById(R.id.web);
         this.fullScreenVideoContainer = (ViewGroup) findViewById(R.id.video);
+
+        this.browser = (BroWebView) findViewById(R.id.web);
         this.browser.setOnLongClickListener(this);
         this.browser.setShouldHideSystemUi(prefs.getBoolean("hideSystemUI", getResources().getBoolean(R.bool.prefHideSystemUIDefault)));
+        this.browser.setWebChromeClient(new DelegatingChromeClient(this));
+        BrowserSettings.configure(this.browser.getSettings());
+
         this.optionsPane = findViewById(R.id.optionsPane);
         this.optionsStarToggle = (CompoundButton) this.optionsPane.findViewById(R.id.star);
         this.optionsStarToggle.setOnCheckedChangeListener(this);
+
         findViewById(R.id.share).setOnClickListener(this);
         findViewById(R.id.shareScreenshot).setOnClickListener(this);
         findViewById(R.id.prefs).setOnClickListener(this);
+
         this.controlBar = (ControlBar) findViewById(R.id.controlBar);
         this.controlBar.setPageLoadController(this);
 
@@ -115,12 +121,8 @@ public class ActivityBrowser extends Activity implements
             }
         });
 
-
-        BrowserSettings.configure(this.browser.getSettings());
-
         WebIconDatabase.getInstance().open(getCacheDir().getAbsolutePath());
         this.iconCache = new IconCache(getCacheDir());
-        this.browser.setWebChromeClient(new DelegatingChromeClient(this));
 
         this.state = StateBase.NAVIGATE_INTENT;
     }
@@ -175,8 +177,13 @@ public class ActivityBrowser extends Activity implements
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        ViewParent browserParent = browser.getParent();
+        if (browserParent instanceof ViewGroup) ViewGroup.class.cast(browserParent).removeView(browser);
+        browser.removeAllViews();
+        browser.destroy();
 
+        // TODO Approach below shouldn't be needed as zoom controls aren't displayed
+/*
         // Workaround for crasher with zoom controls, see http://stackoverflow.com/questions/5267639/how-to-safely-turn-webview-zooming-on-and-off-as-needed
         browser.postDelayed(new Runnable() {
             @Override
@@ -184,6 +191,9 @@ public class ActivityBrowser extends Activity implements
                 browser.destroy();
             }
         }, ViewConfiguration.getZoomControlsTimeout());
+*/
+
+        super.onDestroy();
     }
 
     public BroWebView getWebView() {

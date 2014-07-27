@@ -74,8 +74,6 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
         
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        
         this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
         this.suggestionList = (ListView)findViewById(R.id.suggestions);
         this.suggestionList.setOnItemClickListener(this);
@@ -153,6 +151,7 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
             if(!suggestionList.isShown()) {
                 this.suggestionList.setVisibility(View.VISIBLE);
             }
+            shortcutsPane.setVisibility(View.INVISIBLE);
         }
     }
     

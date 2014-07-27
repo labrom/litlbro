@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true">
+        <layer-list>
+            <item android:bottom="@dimen/searchBoxInsetVert" android:right="24dp" android:top="@dimen/searchBoxInsetVert">
+                <shape>
+                    <corners android:radius="@dimen/boxCorner" />
+                    <solid android:color="@color/searchBoxFocused" />
+                </shape>
+            </item>
+            <item>
+                <bitmap android:gravity="right|center_vertical" android:src="@drawable/icon" />
+            </item>
+        </layer-list>
+    </item>
+    <item>
+        <layer-list>
+            <item android:bottom="@dimen/searchBoxInsetVert" android:right="24dp" android:top="@dimen/searchBoxInsetVert">
+                <shape>
+                    <corners android:radius="@dimen/boxCorner" />
+                    <solid android:color="@color/searchBox" />
+                </shape>
+            </item>
+            <item>
+                <bitmap android:gravity="right|center_vertical" android:src="@drawable/icon" />
+            </item>
+        </layer-list>
+    </item>
+</selector>

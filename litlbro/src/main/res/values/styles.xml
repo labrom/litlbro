@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo">
-        <!-- Customize your theme here. -->
+    <style name="HomeTheme" parent="android:Theme.Holo.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowShowWallpaper">true</item>
+        <item name="android:windowSoftInputMode">stateAlwaysHidden</item>
     </style>
 
     <style name="FullscreenThemeBase" parent="android:Theme.Holo.Light.NoActionBar">
@@ -37,6 +39,12 @@
 
 
     <dimen name="progressDrawablePadding">2dp</dimen>
+    <dimen name="searchBoxDimen">48dp</dimen>
+    <dimen name="searchBoxInsetVert">4dp</dimen>
+    <dimen name="searchBoxInsetHoriz">10dp</dimen>
+    <dimen name="searchBoxInsetRight">34dp</dimen><!-- searchBoxInsetHoriz + searchBoxDimen / 2 -->
+    <dimen name="homeHeaderHeight">68dp</dimen>
+    <dimen name="boxCorner">2dp</dimen>
 
     <style name="controlBar">
     </style>
@@ -80,31 +88,40 @@
     </style>
 
     <style name="homeHeader">
-        <item name="android:background">@drawable/home_header_bg</item>
-        <item name="android:paddingLeft">9dp</item>
-        <item name="android:paddingRight">9dp</item>
-        <item name="android:paddingTop">20dp</item>
-        <item name="android:paddingBottom">14dp</item>
+        <item name="android:layout_height">@dimen/homeHeaderHeight</item>
+        <item name="android:layout_width">match_parent</item>
     </style>
 
     <style name="siteTextBox">
-        <item name="android:background">@drawable/home_header_box</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/searchBoxDimen</item>
+        <item name="android:layout_marginLeft">@dimen/searchBoxInsetHoriz</item>
+        <item name="android:layout_marginRight">@dimen/searchBoxInsetHoriz</item>
+        <item name="android:background">@drawable/search_box_bg</item>
         <item name="android:lines">1</item>
         <item name="android:singleLine">true</item>
-        <item name="android:gravity">center_vertical</item>
-
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">64dp</item>
     </style>
 
     <style name="suggestions">
-        <item name="android:background">@color/suggestionItem</item>
-        <item name="android:cacheColorHint">@color/suggestionItem</item>
-        <item name="android:padding">6dp</item>
-        <item name="android:divider">@drawable/suggestion_separator</item>
-        <item name="android:dividerHeight">1dp</item>
+        <item name="android:background">@drawable/suggestions_bg</item>
+        <item name="android:paddingTop">@dimen/homeHeaderHeight</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:paddingRight">6dp</item>
+        <item name="android:dividerHeight">6dp</item>
+        <item name="android:divider">@null</item>
+        <item name="android:overScrollMode">never</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:scrollbars">none</item>
+        <item name="android:layout_marginLeft">@dimen/searchBoxInsetHoriz</item>
+        <item name="android:layout_marginRight">@dimen/searchBoxInsetRight</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
     </style>
     <style name="suggestion">
-        <item name="android:padding">6dp</item>
-        <item name="android:background">@drawable/suggestion_bg</item>
+        <item name="android:padding">10dp</item>
     </style>
     <style name="suggestionCaption">
         <item name="android:textColor">#000000</item>
@@ -114,7 +131,7 @@
         <item name="android:ellipsize">end</item>
     </style>
     <style name="suggestionUrl">
-        <item name="android:textColor">#909090</item>
+        <item name="android:textColor">#0000a0</item>
         <item name="android:textSize">14sp</item>
         <item name="android:lines">1</item>
         <item name="android:singleLine">true</item>

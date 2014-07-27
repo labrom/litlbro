@@ -5,8 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 
-import labrom.litlbro.util.Wallpaper;
-
 public class NavViewPager extends ViewPager {
     
     private int pageCount;
@@ -27,16 +25,6 @@ public class NavViewPager extends ViewPager {
     public void hintPageCount(int count) {
         pageCount = count;
         setIndicator(0, 0);
-    }
-    
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        
-        // Available after 1.6, sets the shortcut pages background with the device's wallpaper.
-        Drawable wallpaper = Wallpaper.get(getContext());
-        if(wallpaper != null)
-            setBackgroundDrawable(wallpaper);
     }
     
     @Override
