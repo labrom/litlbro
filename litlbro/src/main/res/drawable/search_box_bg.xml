@@ -6,7 +6,7 @@
             <item android:bottom="@dimen/searchBoxInsetVert" android:right="24dp" android:top="@dimen/searchBoxInsetVert">
                 <shape>
                     <corners android:radius="@dimen/boxCorner" />
-                    <solid android:color="@color/searchBoxFocused" />
+                    <solid android:color="@color/searchBoxOpaque" />
                 </shape>
             </item>
             <item>
