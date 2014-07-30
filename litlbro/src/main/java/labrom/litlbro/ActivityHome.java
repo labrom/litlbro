@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -42,8 +41,8 @@ import labrom.litlbro.widget.ShortcutView;
 import labrom.litlbro.widget.ShortcutView.OnShortcutActionListener;
 import labrom.litlbro.widget.ShortcutsNavigatorView;
 import labrom.litlbro.widget.ShortcutsPage.OnEditModeListener;
-import labrom.litlbro.widget.SiteSearchText;
-import labrom.litlbro.widget.SiteSearchText.OnDoneHandler;
+import labrom.litlbro.widget.SearchText;
+import labrom.litlbro.widget.SearchText.OnDoneHandler;
 import labrom.litlbro.widget.SuggestionAdapter;
 import labrom.litlbro.widget.TipDialog;
 
@@ -64,7 +63,7 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
     State state;
 
     private ListView suggestionList;
-    private SiteSearchText siteText;
+    private SearchText searchBox;
     ShortcutsNavigatorView shortcutsPane;
     private DisplayShortcutsTask displayShortcutsTask;
     private SharedPreferences prefs;
@@ -78,9 +77,9 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
         this.suggestionList = (ListView)findViewById(R.id.suggestions);
         this.suggestionList.setOnItemClickListener(this);
         this.suggestionList.setAdapter(new SuggestionAdapter(this));
-        this.siteText = (SiteSearchText)findViewById(R.id.siteTextBox);
-        this.siteText.setOnDoneHandler(this);
-        this.siteText.addTextChangedListener(this);
+        this.searchBox = (SearchText)findViewById(R.id.searchBox);
+        this.searchBox.setOnDoneHandler(this);
+        this.searchBox.addTextChangedListener(this);
         View icon = findViewById(R.id.icon);
         icon.setOnClickListener(this);
         icon.setOnLongClickListener(this);
@@ -137,8 +136,9 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
             suggestionList.setVisibility(View.GONE);
             shortcutsPane.setVisibility(View.VISIBLE);
 //                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.hideSoftInputFromWindow(this.siteText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-            
+//                imm.hideSoftInputFromWindow(this.searchBox.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+            this.searchBox.setSuggestionsShown(false);
             displayShortcuts();
             
             // In HOME state, display next tip if available
@@ -148,10 +148,11 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
                     tipDlg.show(); // Not using Activity.showDialog because tips are showed once only and we don't want to reuse them
             }
         } else if(state == StateBase.SUGGESTIONS) {
-            if(!suggestionList.isShown()) {
+            if(!this.suggestionList.isShown()) {
+                this.shortcutsPane.setVisibility(View.GONE);
                 this.suggestionList.setVisibility(View.VISIBLE);
             }
-            shortcutsPane.setVisibility(View.INVISIBLE);
+            this.searchBox.setSuggestionsShown(true);
         }
     }
     
@@ -190,10 +191,6 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
     
     private void displaySuggestions(String query) {
         new GetSuggestionsTask(history, gossipMgr, duckyMgr, (SuggestionAdapter)this.suggestionList.getAdapter()).execute(query);
-        if(!this.suggestionList.isShown()) {
-            this.shortcutsPane.setVisibility(View.GONE);
-            this.suggestionList.setVisibility(View.VISIBLE);
-        }
     }
     
     @Override
@@ -244,7 +241,6 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
         if(s.length() == 0) {
             changeState(Event.SEARCH_BOX_EMPTY);
             setUI();
-            displayShortcuts();
             return;
         }
 
@@ -254,7 +250,7 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
     }
 
     @Override
-    public void onDone(SiteSearchText e) {
+    public void onDone(SearchText e) {
         changeState(Event.SEARCH_BOX_DONE);
         search(e.getText().toString());
     }
@@ -296,11 +292,11 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
     
     private void handleClickOnIcon() {
         
-        String q = this.siteText.getText().toString();
+        String q = this.searchBox.getText().toString();
         if(q.length() == 0) {
-            siteText.requestFocus();
+            searchBox.requestFocus();
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(siteText, InputMethodManager.SHOW_IMPLICIT);
+            imm.showSoftInput(searchBox, InputMethodManager.SHOW_IMPLICIT);
             return;
         }
         if(state != StateBase.SUGGESTIONS) {
@@ -308,9 +304,9 @@ public class ActivityHome extends Activity implements OnDoneHandler, TextWatcher
             setUI();
             displaySuggestions(q);
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(siteText, InputMethodManager.SHOW_IMPLICIT);
+            imm.showSoftInput(searchBox, InputMethodManager.SHOW_IMPLICIT);
         } else {
-            onDone(siteText);
+            onDone(searchBox);
         }
     }
 

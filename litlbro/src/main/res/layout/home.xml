@@ -18,8 +18,8 @@
         <RelativeLayout
             style="@style/homeHeader">
 
-            <labrom.litlbro.widget.SiteSearchText
-                android:id="@+id/siteTextBox"
+            <labrom.litlbro.widget.SearchText
+                android:id="@+id/searchBox"
                 style="@style/siteTextBox"
                 android:hint="@string/siteTextBoxHint"
                 android:layout_centerVertical="true" />
@@ -28,8 +28,8 @@
                 android:id="@+id/icon"
                 android:layout_width="@dimen/searchBoxDimen"
                 android:layout_height="@dimen/searchBoxDimen"
-                android:layout_alignBottom="@id/siteTextBox"
-                android:layout_alignRight="@id/siteTextBox" />
+                android:layout_alignBottom="@id/searchBox"
+                android:layout_alignRight="@id/searchBox" />
 
         </RelativeLayout>
 

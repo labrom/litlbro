@@ -9,8 +9,8 @@
     <color name="pagerNavBar">@android:color/white</color>
     <color name="pagerNavMask">@color/homeHeaderDark</color>
 
-    <color name="searchBox">#d0ffffff</color>
-    <color name="searchBoxFocused">#faffffff</color>
+    <color name="searchBox">#c0ffffff</color>
+    <color name="searchBoxOpaque">#faffffff</color>
     <!--<color name="suggestionItemPress">#ffffffff</color>-->
     <color name="suggestions">#d0ffffff</color>
 
