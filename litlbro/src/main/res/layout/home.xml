@@ -20,7 +20,7 @@
 
             <labrom.litlbro.widget.SearchText
                 android:id="@+id/searchBox"
-                style="@style/siteTextBox"
+                style="@style/searchBox"
                 android:hint="@string/siteTextBoxHint"
                 android:layout_centerVertical="true" />
 
