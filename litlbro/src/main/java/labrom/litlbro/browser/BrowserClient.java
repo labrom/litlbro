@@ -18,7 +18,7 @@ public final class BrowserClient extends WebViewClient {
     }
     
     public interface IntentHandler {
-        void handleIntent(Intent i);
+        void handleIntent(Intent i, DownloadFileType fileType);
     }
     
     final ControlBar controlBar;
@@ -32,7 +32,6 @@ public final class BrowserClient extends WebViewClient {
      * Should be consistent with what's in the intent filter in the manifest.
      */
     private static final String[] SCHEMES = {"http", "https", "javascript", "about", "inline"};
-    private static final String[] EXCLUDED_EXTENSIONS = {".pdf"};
 
     
     public BrowserClient(ControlBar controlBar, HistoryManager history, IntentHandler intentHandler) {
@@ -63,18 +62,17 @@ public final class BrowserClient extends WebViewClient {
         for(String sch : SCHEMES) {
             if(sch.equals(scheme)) { // Supported scheme
                 if(lastPathSegment != null) {
-                    for(String ext : EXCLUDED_EXTENSIONS) {
-                        if(lastPathSegment.endsWith(ext)) {
-                            intentHandler.handleIntent(new Intent(Intent.ACTION_VIEW, uri));
-                            return true;
-                        }
+                    DownloadFileType fileType = DownloadFileType.fromPath(lastPathSegment);
+                    if (fileType != null) {
+                        intentHandler.handleIntent(new Intent(Intent.ACTION_VIEW, uri), fileType);
+                        return true;
                     }
                 }
                 return false;
             }
         }
 
-        intentHandler.handleIntent(new Intent(Intent.ACTION_VIEW, uri));
+        intentHandler.handleIntent(new Intent(Intent.ACTION_VIEW, uri), null);
         return true;
     }
     

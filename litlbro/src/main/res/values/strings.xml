@@ -40,4 +40,7 @@
     <string name="tipShortcuts">Long-press shortcuts to star/unstar or remove, then hit back to leave edit mode.</string>
     <string name="tipSettings">Long-press bro\'s head for settings.</string>
 
+    <string name="extensionPdf">PDF file</string>
+    <string name="startingDownload">Starting download of %s...</string>
+
 </resources>

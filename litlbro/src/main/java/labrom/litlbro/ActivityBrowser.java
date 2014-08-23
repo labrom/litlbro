@@ -3,6 +3,7 @@ package labrom.litlbro;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,11 +24,13 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebIconDatabase;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.Toast;
 
 import labrom.litlbro.browser.BroWebView;
 import labrom.litlbro.browser.BrowserClient;
 import labrom.litlbro.browser.BrowserSettings;
 import labrom.litlbro.browser.DelegatingChromeClient;
+import labrom.litlbro.browser.DownloadFileType;
 import labrom.litlbro.browser.NavFlags;
 import labrom.litlbro.browser.PageLoadController;
 import labrom.litlbro.browser.ShareScreenshotTask;
@@ -247,8 +250,11 @@ public class ActivityBrowser extends Activity implements
     }
 
     void navigate(Intent intent) {
-
         if (intent != null) {
+            DownloadFileType downloadFileType = DownloadFileType.fromPath(intent.getData().getLastPathSegment());
+            if (downloadFileType != null) {
+                handleIntent(intent, downloadFileType);
+            }
             state = StateBase.NAVIGATE_INTENT;
             browser.clearHistory();
             String url = intent.getDataString();
@@ -413,9 +419,18 @@ public class ActivityBrowser extends Activity implements
     }
 
     @Override
-    public void handleIntent(Intent i) {
-        Log.d(L.TAG, "Sending intent " + i);
-        startActivity(i);
+    public void handleIntent(Intent i, DownloadFileType fileType) {
+        if (fileType != null) {
+            Log.d(L.TAG, "Downloading file " + i.getData());
+            DownloadManager.Request downloadRequest = new DownloadManager.Request(i.getData());
+            downloadRequest.setVisibleInDownloadsUi(true);
+            downloadRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            DownloadManager.class.cast(getSystemService(DOWNLOAD_SERVICE)).enqueue(downloadRequest);
+            Toast.makeText(this, getString(R.string.startingDownload, getString(fileType.titleResId)), Toast.LENGTH_LONG).show();
+        } else {
+            Log.d(L.TAG, "Sending intent " + i);
+            startActivity(i);
+        }
     }
 
 
