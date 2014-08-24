@@ -1,6 +1,8 @@
 package labrom.litlbro.browser;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -212,4 +214,15 @@ public final class BroWebView extends WebView {
         }
     }
 
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+    }
+
+    public Bitmap takeScreenshot(int maxWidth) {
+        Bitmap image = Bitmap.createBitmap(getWidth(), getWidth(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(image);
+        draw(canvas);
+        return Bitmap.createScaledBitmap(image, maxWidth, maxWidth, true);
+    }
 }

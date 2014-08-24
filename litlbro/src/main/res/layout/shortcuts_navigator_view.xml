@@ -3,11 +3,8 @@
     style="@style/shortcutsNavigatorView"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <View android:id="@+id/nav" style="@style/shortcutsPageIndicator"
-        android:layout_width="match_parent" android:layout_alignParentTop="true" />
-    
     <labrom.litlbro.widget.NavViewPager android:id="@+id/pager"
-        android:layout_width="match_parent" android:layout_height="match_parent" android:layout_below="@id/nav">
+        android:layout_width="match_parent" android:layout_height="match_parent">
     </labrom.litlbro.widget.NavViewPager>
     
 

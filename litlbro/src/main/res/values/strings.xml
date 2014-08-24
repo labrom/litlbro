@@ -6,7 +6,7 @@
     <string name="iconContentDesc">LitlBro icon</string>
     <string name="shareDialogTitle">Share a link</string><string name="shareScreenshotDialogTitle">Share a picture of this page</string>
     <string name="progressShareScreenshot">Taking a picture of the web page&#8230;</string>
-    <string name="siteTextBoxHint">Type here to start</string>
+    <string name="siteTextBoxHint">Type here to search</string>
 
     <string name="optionStarPage">STAR THIS PAGE</string>
     <string name="optionShareLink">SHARE LINK</string>

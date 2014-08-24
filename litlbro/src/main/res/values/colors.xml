@@ -2,8 +2,8 @@
 
     <color name="black_overlay">#66000000</color>
 
-    <color name="homeHeaderLight">#d9e0e9</color>
-    <color name="homeHeaderDark">#737e8f</color>
+    <color name="homeHeaderLight">#90a0f0</color>
+    <color name="homeHeaderDark">#5080e0</color>
     <color name="homeBg">@color/homeHeaderDark</color>
 
     <color name="pagerNavBar">@android:color/white</color>
@@ -12,7 +12,7 @@
     <color name="searchBox">#c0ffffff</color>
     <color name="searchBoxOpaque">#f4ffffff</color>
     <color name="suggestions">#d0ffffff</color>
-    <color name="suggestionsSeparator">#daffffff</color>
+    <color name="suggestionsSeparator">#e0e0e0</color>
 
     <color name="shortcutGradientClear">#ea808d9e</color>
     <color name="shortcutGradientDark">#ea202d39</color>

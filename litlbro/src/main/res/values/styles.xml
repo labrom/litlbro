@@ -2,9 +2,9 @@
 <resources>
 
     <style name="HomeTheme" parent="android:Theme.Holo.Light.NoActionBar">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowShowWallpaper">true</item>
+        <!--<item name="android:windowBackground">@android:color/transparent</item>-->
+        <!--<item name="android:colorBackgroundCacheHint">@null</item>-->
+        <!--<item name="android:windowShowWallpaper">true</item>-->
         <item name="android:windowSoftInputMode">stateAlwaysHidden</item>
     </style>
 
@@ -15,15 +15,15 @@
     <style name="FullscreenTheme" parent="FullscreenThemeBase">
     </style>
 
-    <style name="ButtonBar">
-        <item name="android:paddingLeft">2dp</item>
-        <item name="android:paddingTop">5dp</item>
-        <item name="android:paddingRight">2dp</item>
-        <item name="android:paddingBottom">0dp</item>
-        <item name="android:background">@android:drawable/bottom_bar</item>
-    </style>
+    <!--<style name="ButtonBar">-->
+        <!--<item name="android:paddingLeft">2dp</item>-->
+        <!--<item name="android:paddingTop">5dp</item>-->
+        <!--<item name="android:paddingRight">2dp</item>-->
+        <!--<item name="android:paddingBottom">0dp</item>-->
+        <!--<item name="android:background">@android:drawable/bottom_bar</item>-->
+    <!--</style>-->
 
-    <style name="ButtonBarButton" />
+    <!--<style name="ButtonBarButton" />-->
 
 
 
@@ -89,6 +89,7 @@
     <style name="homeHeader">
         <item name="android:layout_height">@dimen/homeHeaderHeight</item>
         <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/homeBg</item>
     </style>
 
     <style name="searchBox">
@@ -105,20 +106,14 @@
     </style>
 
     <style name="suggestions">
-        <item name="android:background">@drawable/suggestions_bg</item>
-        <item name="android:paddingTop">@dimen/suggestionsOverlayTop</item>
-        <item name="android:paddingLeft">6dp</item>
-        <item name="android:paddingBottom">6dp</item>
-        <item name="android:paddingRight">6dp</item>
         <item name="android:dividerHeight">0.5dp</item>
-        <item name="android:divider">@color/suggestionsSeparator</item>
+        <item name="android:listDivider">@color/suggestionsSeparator</item>
         <item name="android:overScrollMode">never</item>
-        <item name="android:clipToPadding">false</item>
         <item name="android:scrollbars">none</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:paddingTop">10dp</item>
         <item name="android:layout_marginLeft">@dimen/searchBoxInsetHoriz</item>
-        <item name="android:layout_marginRight">@dimen/searchBoxInsetRight</item>
-        <item name="android:layout_marginTop">15dp</item>
-        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_marginRight">@dimen/searchBoxInsetHoriz</item>
     </style>
     <style name="suggestion">
         <item name="android:padding">10dp</item>
@@ -143,10 +138,6 @@
     </style>
 
     <style name="shortcutsNavigatorView">
-    </style>
-    <style name="shortcutsPageIndicator">
-        <item name="android:background">@drawable/pager_indicator</item>
-        <item name="android:layout_height">5dp</item>
     </style>
     <integer name="shortcutPageIndicatorMaskMin">120</integer>
     <style name="shortcuts">

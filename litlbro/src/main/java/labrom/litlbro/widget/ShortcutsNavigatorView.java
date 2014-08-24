@@ -3,6 +3,7 @@ package labrom.litlbro.widget;
 import android.content.Context;
 import android.graphics.drawable.LayerDrawable;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -12,7 +13,6 @@ import labrom.litlbro.R;
 import labrom.litlbro.data.History;
 import labrom.litlbro.icon.IconCache;
 import labrom.litlbro.util.UrlUtil;
-import labrom.litlbro.widget.NavViewPager.NavListener;
 import labrom.litlbro.widget.ShortcutView.OnShortcutActionListener;
 import labrom.litlbro.widget.ShortcutsPage.OnEditModeListener;
 
@@ -38,24 +38,20 @@ public class ShortcutsNavigatorView extends RelativeLayout implements OnEditMode
         super(context, attrs);
     }
 
+    public ShortcutsNavigatorView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
+
     public ShortcutsNavigatorView(Context context) {
         super(context);
+        LayoutInflater.from(context).inflate(R.layout.shortcuts_navigator_view, this, true);
+        onFinishInflate();
     }
     
     @Override
     protected void onFinishInflate() {
         minMaskWidth = getResources().getInteger(R.integer.shortcutPageIndicatorMaskMin);
         pager = (NavViewPager)findViewById(R.id.pager);
-        nav = findViewById(R.id.nav);
-        pager.setNavListener(new NavListener() {
-            
-            @Override
-            public void setMaskLevels(int levelLeft, int levelRight) {
-                LayerDrawable bg = (LayerDrawable)nav.getBackground();
-                bg.findDrawableByLayerId(R.id.mask_left).setLevel(Math.max(levelLeft, minMaskWidth));
-                bg.findDrawableByLayerId(R.id.mask_right).setLevel(Math.max(levelRight, minMaskWidth));
-            }
-        });
     }
     
     public void setup(int pages) {
@@ -67,7 +63,6 @@ public class ShortcutsNavigatorView extends RelativeLayout implements OnEditMode
                 this.shortcutsPages[i] = sp;
             }
             pager.setAdapter(new ShortcutsPagerAdapter(this.shortcutsPages));
-            pager.hintPageCount(pages);
         }
     }
 
