@@ -8,12 +8,14 @@
     <string name="progressShareScreenshot">Taking a picture of the web page&#8230;</string>
     <string name="siteTextBoxHint">Type here to search</string>
 
+    <string name="pageOptionsTitle">Page Options</string>
     <string name="optionStarPage">STAR THIS PAGE</string>
     <string name="optionShareLink">SHARE LINK</string>
     <string name="optionShareScreenshot">SHARE SCREENSHOT</string>
     <string name="optionUnstarPage">UNSTAR THIS PAGE</string>
     <string name="optionPreferences">SETTINGS</string>
 
+    <string name="prefsTitle">Litlbro Settings</string>
     <string name="prefUseAnimationsTitle">Screen animations</string>
     <string name="prefUseAnimationsOnSummary">All animations are enabled</string>
     <string name="prefUseAnimationsOffSummary">Some animations are disabled</string>

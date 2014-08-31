@@ -3,8 +3,12 @@ package labrom.litlbro;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.DownloadManager;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -51,19 +55,15 @@ import labrom.litlbro.widget.ShakeDialog;
  * @author Romain Laboisse labrom@gmail.com
  */
 public class ActivityBrowser extends Activity implements
-        BrowserClient.Listener, PageLoadController, OnClickListener,
-        OnCheckedChangeListener, BrowserClient.IntentHandler, ShakeListener,
-        ShakeDialog.Listener, View.OnLongClickListener, DelegatingChromeClient.Delegate {
+        BrowserClient.Listener, PageLoadController, ControlBar.OnControlBarActionListener,
+        BrowserClient.IntentHandler, ShakeListener, ShakeDialog.Listener, DelegatingChromeClient.Delegate {
 
 
     private static final int SHAKE_MIN_ACCEL = 3;
-
-    public static final int DIALOG_PROGRESS_SHARE_SCREENSHOT = 1;
+    private static final int PAGE_OPTIONS = 1;
 
     private BroWebView browser;
     private ControlBar controlBar;
-    private View optionsPane;
-    private CompoundButton optionsStarToggle;
     private BrowserClient viewClient;
     private Database db;
     private HistoryManager history;
@@ -74,8 +74,6 @@ public class ActivityBrowser extends Activity implements
     private AlertDialog currentlyShowingShakeDialog;
     private ViewGroup fullScreenVideoContainer;
     private WebChromeClient.CustomViewCallback fullScreenVideoCallback;
-    private Animation pushOptions;
-    private Animation pullOptions;
     private IconCache iconCache;
     private String currentUrl;
 
@@ -89,40 +87,13 @@ public class ActivityBrowser extends Activity implements
         this.fullScreenVideoContainer = (ViewGroup) findViewById(R.id.video);
 
         this.browser = (BroWebView) findViewById(R.id.web);
-        this.browser.setOnLongClickListener(this);
         this.browser.setShouldHideSystemUi(prefs.getBoolean("hideSystemUI", getResources().getBoolean(R.bool.prefHideSystemUIDefault)));
         this.browser.setWebChromeClient(new DelegatingChromeClient(this));
         BrowserSettings.configure(this.browser.getSettings());
 
-        this.optionsPane = findViewById(R.id.optionsPane);
-        this.optionsStarToggle = (CompoundButton) this.optionsPane.findViewById(R.id.star);
-        this.optionsStarToggle.setOnCheckedChangeListener(this);
-
-        findViewById(R.id.share).setOnClickListener(this);
-        findViewById(R.id.shareScreenshot).setOnClickListener(this);
-        findViewById(R.id.prefs).setOnClickListener(this);
-
         this.controlBar = (ControlBar) findViewById(R.id.controlBar);
         this.controlBar.setPageLoadController(this);
-
-        // Control pad animations
-        this.pullOptions = AnimationUtils.loadAnimation(this, R.anim.pull_options_pane);
-        this.pushOptions = AnimationUtils.loadAnimation(this, R.anim.push_options_pane);
-        this.pushOptions.setAnimationListener(new AnimationListener() {
-
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                optionsPane.setVisibility(View.INVISIBLE);
-            }
-        });
+        this.controlBar.setOnControlBarActionListener(this);
 
         WebIconDatabase.getInstance().open(getCacheDir().getAbsolutePath());
         this.iconCache = new IconCache(getCacheDir());
@@ -143,9 +114,6 @@ public class ActivityBrowser extends Activity implements
 
         if (this.state == StateBase.NAVIGATE_INTENT) {
             navigate(getIntent());
-        } else if (this.state == StateBase.PAGE_OPTIONS) {
-            changeState(Event.BACK);
-            setUI();
         }
         this.shaker.register();
     }
@@ -175,13 +143,13 @@ public class ActivityBrowser extends Activity implements
         this.shaker.unregister();
         this.browser.stopLoading();
         this.db.close();
-        this.db = null;
     }
 
     @Override
     protected void onDestroy() {
         ViewParent browserParent = browser.getParent();
-        if (browserParent instanceof ViewGroup) ViewGroup.class.cast(browserParent).removeView(browser);
+        if (browserParent instanceof ViewGroup)
+            ViewGroup.class.cast(browserParent).removeView(browser);
         browser.removeAllViews();
         browser.destroy();
 
@@ -199,46 +167,43 @@ public class ActivityBrowser extends Activity implements
         super.onDestroy();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PAGE_OPTIONS && this.state == StateBase.PAGE_OPTIONS) {
+            changeState(Event.BACK);
+            setUI();
+        }
+    }
+
     public BroWebView getWebView() {
         return browser;
     }
 
+    @Override
+    public void onOptionsPaneClicked() {
+        changeState(Event.TAP_HW_MENU);
+        setUI();
+    }
 
     private void setUI() {
-        boolean useAnimations = ActivityPrefs.useWindowAnimations(prefs, getResources());
         if (state == StateBase.PAGE_LOADING) {
-            browser.setVisibility(View.VISIBLE);
-            controlBar.show(useAnimations);
-            hideOptionsPane();
+            controlBar.showProgress();
         } else if (state == StateBase.PAGE_LOADED) {
-            browser.setVisibility(View.VISIBLE);
-            if (controlBar.isShown())
-                this.controlBar.hide(useAnimations);
-            hideOptionsPane();
+            controlBar.hideProgress();
         } else if (state == StateBase.PAGE_OPTIONS) {
-            if (controlBar.isShown())
-                this.controlBar.hide(useAnimations);
-            optionsStarToggle.setChecked(history.isStarred(this.browser.getUrl()));
+            controlBar.hideProgress();
+            browser.showSystemUi(false);
             showOptionsPane();
         }
     }
 
     private void showOptionsPane() {
-        if (!optionsPane.isShown()) {
-            browser.showSystemUi(false);
-            if (ActivityPrefs.useWindowAnimations(prefs, getResources())) {
-                optionsPane.startAnimation(pullOptions);
-            }
-            optionsPane.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void hideOptionsPane() {
-        if (optionsPane.isShown() && ActivityPrefs.useWindowAnimations(prefs, getResources())) {
-            optionsPane.startAnimation(pushOptions);
-        } else {
-            optionsPane.setVisibility(View.INVISIBLE);
-        }
+//        OptionsPaneFragment optionsPaneFragment = OptionsPaneFragment.newInstance(browser.getUrl());
+//        setOptionsPaneDialogDismissListener(optionsPaneFragment);
+//        optionsPaneFragment.show(getFragmentManager(), "optionsPane");
+        Intent pageOptionsIntent = new Intent(this, ActivityPageOptions.class);
+        pageOptionsIntent.setData(Uri.parse(browser.getUrl()));
+        startActivityForResult(pageOptionsIntent, PAGE_OPTIONS);
     }
 
     void navigate(String url, boolean noHistory) {
@@ -289,7 +254,6 @@ public class ActivityBrowser extends Activity implements
         return state != null && state.getLastEvent() == Event.RELOAD;
     }
 
-
     @Override
     public void onPageFinished() {
         changeState(Event.PAGE_FINISHED_LOADING);
@@ -332,16 +296,16 @@ public class ActivityBrowser extends Activity implements
         hideFullScreenVideo(true);
 
         changeState(Event.BACK);
-        if (state == null) {
+        if (this.state == null) {
             if (this.browser.canGoBack()) {
-                state = StateBase.PAGE_LOADING;
+                this.state = StateBase.PAGE_LOADING;
                 NavFlags flags = new NavFlags();
                 flags.isBack = true;
                 this.browser.setTag(R.id.tag_nav_flags, flags);
                 this.browser.goBack();
                 this.browser.showSystemUi();
                 setUI();
-            } else /*if(gotViewIntent())*/ {
+            } else {
                 super.onBackPressed();
             }
         } else {
@@ -349,73 +313,9 @@ public class ActivityBrowser extends Activity implements
         }
     }
 
-
     private void changeState(Event e) {
-        if (state != null)
-            state = state.change(e);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.share:
-                share();
-                return;
-            case R.id.shareScreenshot:
-                shareScreenshot();
-                return;
-            case R.id.prefs:
-                ActivityPrefs.startBy(this);
-                return;
-        }
-    }
-
-    @Override
-    public boolean onLongClick(View v) {
-        if (v.getId() == R.id.web) {
-            changeState(Event.TAP_HW_MENU);
-            setUI();
-        }
-        return false;
-    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton v, boolean checked) {
-        switch (v.getId()) {
-            case R.id.star:
-                toggleStarred(checked);
-                return;
-        }
-    }
-
-    private void share() {
-        Intent i = new Intent(Intent.ACTION_SEND);
-        i.putExtra(Intent.EXTRA_TEXT, this.browser.getUrl());
-        i.setType("text/plain");
-        startActivity(Intent.createChooser(i, getString(R.string.shareDialogTitle)));
-    }
-
-    private void toggleStarred(boolean star) {
-        if (star)
-            this.history.starUrl(this.browser.getUrl());
-        else
-            this.history.unstarUrl(this.browser.getUrl());
-    }
-
-    private void shareScreenshot() {
-        showDialog(DIALOG_PROGRESS_SHARE_SCREENSHOT);
-        new ShareScreenshotTask(this).execute(UrlUtil.getDomain(browser.getUrl()));
-    }
-
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        if (id == DIALOG_PROGRESS_SHARE_SCREENSHOT) {
-            ProgressDialog d = new ProgressDialog(this);
-            d.setIndeterminate(true);
-            d.setMessage(getString(R.string.progressShareScreenshot));
-            return d;
-        }
-        return super.onCreateDialog(id);
+        if (this.state != null)
+            this.state = this.state.change(e);
     }
 
     @Override

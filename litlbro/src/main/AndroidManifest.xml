@@ -3,6 +3,7 @@
     package="labrom.litlbro">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -11,17 +12,18 @@
         <activity
             android:name=".ActivityHome"
             android:label="@string/app_name"
-            android:theme="@style/HomeTheme"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:theme="@style/HomeTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ActivityBrowser"
+        <activity
+            android:name=".ActivityBrowser"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@style/FullscreenTheme">
+            android:theme="@style/FullscreenTheme"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -35,14 +37,27 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".ActivityPrefs"></activity>
-        <activity android:name=".ActivityPrefsBlacklist">
+        <activity
+            android:name=".ActivityPageOptions"
+            android:label="@string/pageOptionsTitle"
+            android:theme="@style/PageOptionsTheme"></activity>
+        <activity
+            android:name=".ActivityPrefs"
+            android:label="@string/prefsTitle"
+            android:theme="@style/PrefsTheme"></activity>
+        <activity
+            android:name=".ActivityPrefsBlacklist"
+            android:label="@string/prefsTitle"
+            android:theme="@style/PrefsTheme">
             <intent-filter>
                 <action android:name="labrom.litlbro.prefs.blacklist" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ActivityPrefsTips">
+        <activity
+            android:name=".ActivityPrefsTips"
+            android:label="@string/prefsTitle"
+            android:theme="@style/PrefsTheme">
             <intent-filter>
                 <action android:name="labrom.litlbro.prefs.tips" />
                 <category android:name="android.intent.category.DEFAULT" />

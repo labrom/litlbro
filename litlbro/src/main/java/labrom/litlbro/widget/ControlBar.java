@@ -12,7 +12,11 @@ import labrom.litlbro.R;
 import labrom.litlbro.browser.DelegatingChromeClient;
 import labrom.litlbro.browser.PageLoadController;
 
-public class ControlBar extends RelativeLayout implements DelegatingChromeClient.Delegate {
+public class ControlBar extends RelativeLayout implements DelegatingChromeClient.Delegate, View.OnClickListener {
+
+    public interface OnControlBarActionListener {
+        void onOptionsPaneClicked();
+    }
     
     /**
      * Control pads will always show at least this long.
@@ -36,32 +40,30 @@ public class ControlBar extends RelativeLayout implements DelegatingChromeClient
     private static int CONTROL_BAR_PROGRESS_POLL_INTERVAL = 1000;
     
     private PageLoadingView pageLoadingView;
+    private View optionsButton;
     private PageLoadController pageLoadController;
+    private OnControlBarActionListener onControlBarActionListener;
     private long lastControlPadShowTime;
     private final Handler handler = new Handler();
 
-    private final Runnable runHide = new Runnable() {
+    private final Runnable hideProgress = new Runnable() {
         @Override
         public void run() {
-            setVisibility(View.INVISIBLE);
+            pageLoadingView.setVisibility(INVISIBLE);
             onReceivedTitle(null);
         }
     };
-    private class RunTimedHide implements Runnable {
-        private boolean useAnimation;
-        public RunTimedHide(boolean useAnimation) {
-            this.useAnimation = useAnimation;
-        }
-        
+
+    private class TimedHideProgressRunnable implements Runnable {
         @Override
         public void run() {
             if(pageLoadingView.getProgress() >= HIDE_ON_PROGRESS)
-                hide(this.useAnimation);
+                hideProgress();
             else
                 handler.postDelayed(this, CONTROL_BAR_PROGRESS_POLL_INTERVAL);
         }
     };
-    private RunTimedHide runTimedHide;
+    private TimedHideProgressRunnable timeHideProgress;
 
 
 
@@ -80,7 +82,9 @@ public class ControlBar extends RelativeLayout implements DelegatingChromeClient
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        pageLoadingView = (PageLoadingView)findViewById(R.id.pageTitleProgressLabel);
+        pageLoadingView = (PageLoadingView) findViewById(R.id.pageTitleProgressLabel);
+        optionsButton = findViewById(R.id.optionsButton);
+        optionsButton.setOnClickListener(this);
     }
     
     public PageLoadController getPageLoadController() {
@@ -91,29 +95,46 @@ public class ControlBar extends RelativeLayout implements DelegatingChromeClient
         pageLoadController = pageLoader;
     }
 
-    public void show(boolean useAnimation) {
-        handler.removeCallbacks(runHide);
-        
-        setVisibility(View.VISIBLE);
+    public OnControlBarActionListener getOnControlBarActionListener() {
+        return onControlBarActionListener;
+    }
+
+    public void setOnControlBarActionListener(OnControlBarActionListener onControlBarActionListener) {
+        this.onControlBarActionListener = onControlBarActionListener;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == optionsButton && onControlBarActionListener != null) {
+            onControlBarActionListener.onOptionsPaneClicked();
+        }
+    }
+
+    public void showProgress() {
+        handler.removeCallbacks(hideProgress);
+
+        optionsButton.setVisibility(INVISIBLE);
+        pageLoadingView.setVisibility(VISIBLE);
         lastControlPadShowTime = System.currentTimeMillis();
         onReceivedTitle(null);
 
-        runTimedHide = new RunTimedHide(useAnimation);
-        handler.postDelayed(runTimedHide, CONTROL_BAR_SHOW_TIME);
+        timeHideProgress = new TimedHideProgressRunnable();
+        handler.postDelayed(timeHideProgress, CONTROL_BAR_SHOW_TIME);
     }
     
-    public void hide(boolean useAnimation) {
-        if(runTimedHide != null)
-            handler.removeCallbacks(runTimedHide);
+    public void hideProgress() {
+        optionsButton.setVisibility(View.VISIBLE);
+        if(timeHideProgress != null)
+            handler.removeCallbacks(timeHideProgress);
         if(!isShown())
             return;
         
         int durationShown = (int)(System.currentTimeMillis() - lastControlPadShowTime);
         int delay = CONTROL_PAD_MIN_SHOW_TIME - durationShown;
         if(delay > 0) {
-            handler.postDelayed(runHide, delay);
+            handler.postDelayed(hideProgress, delay);
         } else {
-            runHide.run();
+            hideProgress.run();
         }
     }
 

@@ -1,12 +1,25 @@
 <labrom.litlbro.widget.ControlBar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/controlBar"
     style="@style/controlBar"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:visibility="invisible">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <labrom.litlbro.widget.PageLoadingView
-        style="@style/pageTitleProgressLabel"
         android:id="@+id/pageTitleProgressLabel"
-        android:layout_centerInParent="true" />
+        style="@style/pageTitleProgressLabel"
+        android:layout_centerInParent="true"
+        android:visibility="invisible" />
+
+    <View
+        style="@style/optionsButton"
+        android:id="@+id/optionsButton"
+        android:layout_width="@dimen/optionsButtonDimen"
+        android:layout_height="@dimen/optionsButtonDimen"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/icon"
+        android:visibility="invisible" />
 
 </labrom.litlbro.widget.ControlBar>

@@ -16,8 +16,6 @@
     <color name="shortcutCaptionStrip">#80000000</color>
     <color name="shortcutEditbarBg">#c0ffffff</color>
 
-    <color name="optionsPaneBg">#ea202d41</color>
-
     <color name="textDarkGray">#505050</color>
     <color name="textClear">#fcfcfc</color>
     <color name="textClearShadow">#90303030</color>

@@ -1,6 +1,6 @@
 package labrom.litlbro.browser;
 
-import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,21 +15,20 @@ import java.io.FileOutputStream;
 import labrom.litlbro.ActivityBrowser;
 import labrom.litlbro.R;
 
-/**
-* Created by labrom on 7/5/14.
-*/
-public final class ShareScreenshotTask extends AsyncTask<String, Void, Uri> {
+public class ShareScreenshotTask extends AsyncTask<String, Void, Uri> {
 
-    private ActivityBrowser browserActivity;
+    private Activity activity;
+    private BroWebView webView;
     private Picture screenshot;
 
-    public ShareScreenshotTask(ActivityBrowser browserActivity) {
-        this.browserActivity = browserActivity;
+    public ShareScreenshotTask(Activity activity, BroWebView webView) {
+        this.activity = activity;
+        this.webView = webView;
     }
 
     @Override
     protected void onPreExecute() {
-        screenshot = browserActivity.getWebView().capturePicture();
+        screenshot = webView.capturePicture();
     }
 
     @Override
@@ -41,13 +40,13 @@ public final class ShareScreenshotTask extends AsyncTask<String, Void, Uri> {
 
         String filename = params[0]+ ".png";
         try {
-            FileOutputStream out = browserActivity.openFileOutput(filename, Context.MODE_WORLD_READABLE);
+            FileOutputStream out = activity.openFileOutput(filename, Context.MODE_WORLD_READABLE);
             receptacle.compress(Bitmap.CompressFormat.PNG, 100, out);
             out.flush();
             out.close();
 
-            String fileStreamPath = browserActivity.getFileStreamPath(filename).getAbsolutePath();
-            String uri = MediaStore.Images.Media.insertImage(browserActivity.getContentResolver(), fileStreamPath, params[0], null);
+            String fileStreamPath = activity.getFileStreamPath(filename).getAbsolutePath();
+            String uri = MediaStore.Images.Media.insertImage(activity.getContentResolver(), fileStreamPath, params[0], null);
             return Uri.parse(uri);
         } catch(Exception e) {
             return null;
@@ -57,15 +56,14 @@ public final class ShareScreenshotTask extends AsyncTask<String, Void, Uri> {
     }
 
     protected void onPostExecute(Uri imageUri) {
-        browserActivity.dismissDialog(ActivityBrowser.DIALOG_PROGRESS_SHARE_SCREENSHOT);
         if(imageUri == null)
             return;
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        i.putExtra(Intent.EXTRA_TEXT, "Here is a picture of the page at " + browserActivity.getWebView().getUrl());
+        i.putExtra(Intent.EXTRA_TEXT, "Here is a picture of the page at " + webView.getUrl());
         i.putExtra(Intent.EXTRA_STREAM, imageUri);
         i.setType("image/png");
-        browserActivity.startActivity(Intent.createChooser(i, browserActivity.getString(R.string.shareScreenshotDialogTitle)));
+        activity.startActivity(Intent.createChooser(i, activity.getString(R.string.shareScreenshotDialogTitle)));
 
     }
 }
