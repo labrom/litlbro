@@ -1,7 +1,7 @@
 package labrom.litlbro;
 
+import android.app.Activity;
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,9 +14,10 @@ import labrom.litlbro.browser.ShareScreenshotTask;
 import labrom.litlbro.data.DBHistoryManager;
 import labrom.litlbro.data.Database;
 import labrom.litlbro.data.HistoryManager;
-import labrom.litlbro.util.UrlUtil;
 
 public class OptionsPaneFragment extends Fragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+
+    public static final int RESULT_CODE_SHARE_SCREENSHOT = 10;
 
     public static OptionsPaneFragment newInstance(String url) {
         OptionsPaneFragment frag = new OptionsPaneFragment();
@@ -108,14 +109,17 @@ public class OptionsPaneFragment extends Fragment implements View.OnClickListene
     }
 
     private void shareScreenshot() {
-        final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), null, getString(R.string.progressShareScreenshot), true);
-        new ShareScreenshotTask(getActivity(), ActivityBrowser.class.cast(getActivity()).getWebView()) {
-            @Override
-            protected void onPostExecute(Uri imageUri) {
-                super.onPostExecute(imageUri);
-                progressDialog.dismiss();
-            }
-        }.execute(UrlUtil.getDomain(this.url));
+        final Activity activity = getActivity();
+        if (activity instanceof ActivityBrowser) {
+            new ShareScreenshotTask(activity, ActivityBrowser.class.cast(activity).getWebView())
+                    .execute(this.url);
+        }
+        else {
+            Intent urlData = new Intent();
+            urlData.setData(Uri.parse(this.url));
+            activity.setResult(RESULT_CODE_SHARE_SCREENSHOT, urlData);
+            getActivity().finish();
+        }
     }
 
 

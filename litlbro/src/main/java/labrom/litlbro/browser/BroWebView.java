@@ -219,10 +219,12 @@ public final class BroWebView extends WebView {
         super.onDraw(canvas);
     }
 
-    public Bitmap takeScreenshot(int maxWidth) {
-        Bitmap image = Bitmap.createBitmap(getWidth(), getWidth(), Bitmap.Config.ARGB_8888);
+    public Bitmap takeScreenshot(int maxDim) {
+        int dim = Math.min(getWidth(), getHeight());
+        int destDim = Math.min(dim, maxDim);
+        Bitmap image = Bitmap.createBitmap(dim, dim, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(image);
         draw(canvas);
-        return Bitmap.createScaledBitmap(image, maxWidth, maxWidth, true);
+        return Bitmap.createScaledBitmap(image, destDim, destDim, true);
     }
 }

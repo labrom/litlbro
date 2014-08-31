@@ -2,13 +2,7 @@ package labrom.litlbro;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.DownloadManager;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -18,16 +12,10 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationUtils;
 import android.webkit.WebChromeClient;
 import android.webkit.WebIconDatabase;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Toast;
 
 import labrom.litlbro.browser.BroWebView;
@@ -172,6 +160,11 @@ public class ActivityBrowser extends Activity implements
         if (requestCode == PAGE_OPTIONS && this.state == StateBase.PAGE_OPTIONS) {
             changeState(Event.BACK);
             setUI();
+
+            if (resultCode == OptionsPaneFragment.RESULT_CODE_SHARE_SCREENSHOT) {
+                new ShareScreenshotTask(this, browser)
+                        .execute(data.getData().toString());
+            }
         }
     }
 

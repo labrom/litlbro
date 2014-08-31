@@ -14,6 +14,8 @@
     <string name="optionShareScreenshot">SHARE SCREENSHOT</string>
     <string name="optionUnstarPage">UNSTAR THIS PAGE</string>
     <string name="optionPreferences">SETTINGS</string>
+    <string name="shareScreenShotImageDescriptionFormat">Screenshot of web page at %1$s, picture size: %2$dx%3$d</string>
+    <string name="shareScreenShotMessageBodyFormat">Here is a picture of the page at %1$s</string>
 
     <string name="prefsTitle">Litlbro Settings</string>
     <string name="prefUseAnimationsTitle">Screen animations</string>
